@@ -1,0 +1,27 @@
+{
+  "name": "ooloo-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "MIT",
+  "dependencies": {
+    "apidoc": "^0.17.6",
+    "bcryptjs": "^2.4.3",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-jwt": "^5.3.1",
+    "helmet": "^3.12.0",
+    "jsonwebtoken": "^8.2.1",
+    "jwks-rsa": "^1.2.1",
+    "lodash": "^4.17.10",
+    "mailchimp-api-v3": "^1.9.0",
+    "mailgun-js": "^0.18.0",
+    "morgan": "^1.9.0",
+    "path": "^0.12.7",
+    "pg": "^7.4.2",
+    "sequelize": "^4.37.6",
+    "stripe": "^5.8.0"
+  }
+}
