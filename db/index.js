@@ -3,7 +3,6 @@ const Sequelize = require('sequelize')
 
 // SET TABLE SCHEMA
 const Users = require('./users')(db)
-const Follows = require('./follows')(db)
 const Subscriptions = require('./subscriptions')(db)
 const Interests = require('./interests')(db)
 
@@ -11,20 +10,6 @@ const Interests = require('./interests')(db)
 const UsersInterests = db.define('UsersInterests', {})
 
 // ASSIGN RELATIONSHIPS
-/* *
-* Follows:Users
-* */
-
-// Users:Follows (1:n)
-// Follows:Users (1:2)
-// Users:Users (n:m)
-
-
-// option { onDelete: 'cascade' } leaves no orphans http://dba.stackexchange.com/questions/44956/good-explanation-of-cascade-on-delete-update-behavior
-// option { hooks: true } destroys each instance one by one to safely delete http://docs.sequelizejs.com/en/latest/docs/hooks/
-Users.belongsToMany(Users, { as: 'followers', through: Follows, foreignKey: 'followerId', onDelete: 'cascade', hooks: true })
-Users.belongsToMany(Users, { as: 'followedUsers', through: Follows, foreignKey: 'followedId', onDelete: 'cascade', hooks: true })
-
 /* *
 * Subscriptions:Users
 * */
@@ -59,7 +44,6 @@ db.sync().then(function () {
 module.exports = {
   db,
   Users,
-  Follows,
   Subscriptions,
   Interests,
   UsersInterests
