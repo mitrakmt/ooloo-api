@@ -13,7 +13,7 @@ emailController.CONTACT_US = (req, res) => {
 
   let emailData = {
     from: email,
-    to: 'contact@gymflow.app',
+    to: 'contact@ooloo.app',
     subject: "[CONTACT] - Topic: " + topic,
     text: "Name: " + name + ", Topic: " + topic + "\n \n" + message
   }
@@ -56,10 +56,10 @@ emailController.PASSWORD_RESET = (req, res) => {
   let email = req.body.email
   let token = generatePasswordResetToken(email)
   let emailData = {
-    from: 'passwordreset@gymflow.app',
+    from: 'passwordreset@ooloo.app',
     to: email,
-    subject: 'GymFlow - Password Reset',
-    text: `Please use the following link to reset your password: https://www.gymflow.app/passwordreset/${token}
+    subject: 'Ooloo - Password Reset',
+    text: `Please use the following link to reset your password: https://www.ooloo.app/passwordreset/${token}
     
     This link will expire in 60 minutes.`
   }

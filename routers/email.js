@@ -3,7 +3,7 @@ let emailController = require('../controllers/email')
 
 emailRouter.route('/contact')
     /**
-     * @api {post} /email/contact Contact GymFlow
+     * @api {post} /email/contact Contact Ooloo
      * @apiName ContactUs
      * @apiGroup Email
      *
