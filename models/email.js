@@ -10,7 +10,7 @@ emailModel.PASSWORD_RESET = (email, token) => {
         }
       })
       .then(result => {
-        return `https://www.gymflow.app/passwordreset/${token}`
+        return `https://www.ooloo.app/passwordreset/${token}`
       });
 }
 
