@@ -110,7 +110,6 @@ userModel.CHECK_USERNAME_IN_USE = (username) => {
 }
 
 userModel.DELETE_USER = (id) => {
-    // TODO: need to see if destroy was successful
     return User.destroy({
         where: {
             id

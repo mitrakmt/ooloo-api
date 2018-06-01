@@ -8,7 +8,6 @@ const rootRouter = require('./routers/index')
 const expressJWT = require('express-jwt')
 const helmet = require('helmet')
 const db = require('./db')
-// const jwt = require('jsonwebtoken')
 const PORT = process.env.PORT || 3001
 const app = express()
 
@@ -27,7 +26,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(expressJWT ({ secret: 'this is the secret token!' }).unless({ path: ['/api/auth/signin', '/api/auth/signup'] }))
 app.use('/api', rootRouter)
 
 app.listen(PORT, () => console.log('Making some magic on port', PORT))
