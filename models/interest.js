@@ -18,7 +18,7 @@ interestModel.GET_INTERESTS = (userId) => {
     })
 }
 
-interestModel.ADD_INTEREST = (userId, interests) => {
+interestModel.ADD_INTEREST = (userId, interestId) => {
         return Interest.findOne({
             where: {
                 id: interestId
