@@ -8,11 +8,6 @@ const Interests = require('./interests')(db)
 // CREATE JOIN TABLES
 const UsersInterests = db.define('UsersInterests', {})
 
-// option { onDelete: 'cascade' } leaves no orphans http://dba.stackexchange.com/questions/44956/good-explanation-of-cascade-on-delete-update-behavior
-// option { hooks: true } destroys each instance one by one to safely delete http://docs.sequelizejs.com/en/latest/docs/hooks/
-Users.belongsToMany(Users, { as: 'subscribedFrom', through: Subscriptions, foreignKey: 'subscribedFromId', onDelete: 'cascade', hooks: true })
-Users.belongsToMany(Users, { as: 'subscribedTo', through: Subscriptions, foreignKey: 'subscribedToId', onDelete: 'cascade', hooks: true })
-
 /* *
 * Interests:Users
 * */
