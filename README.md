@@ -8,3 +8,8 @@
 
 ### Updating the docs
 - To update the docs based on code changes, please run "apidoc -i routers/ -o docs/"
+
+## Development Process
+### Branches
+- Always branch off of "dev" branch
+- All feature branches should be named "feat/someFeatureName"
