@@ -26,7 +26,6 @@ interestController.ADD_INTEREST = (req, res) => {
     }
 
     Promise.all(interestPromises).then(promiseResponse => {
-        console.log('res', promiseResponse);
         res.status(200).send({
             success: true
         })
