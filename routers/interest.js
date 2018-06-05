@@ -109,7 +109,5 @@ interestRouter.route('/')
      *     }
      */
     .get(interestController.GET_AVAILABLE_INTERESTS)
-    .post(interestController.ADD_MASTER_INTEREST)
-    .delete(interestController.DELETE_MASTER_INTEREST)
 
 module.exports = interestRouter

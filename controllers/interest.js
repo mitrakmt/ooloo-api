@@ -41,22 +41,4 @@ interestController.GET_AVAILABLE_INTERESTS = (req, res) => {
         })
 }
 
-interestController.ADD_MASTER_INTEREST = (req, res) => {
-    let interest = req.body.interest
-
-    interestModel.ADD_MASTER_INTEREST(interest)
-        .then(response => {
-            res.status(200).send(response)
-        })
-}
-
-interestController.DELETE_MASTER_INTEREST = (req, res) => {
-    let interest = req.body.interest
-
-    interestModel.DELETE_MASTER_INTEREST(interest)
-        .then(response => {
-            res.status(200).send(response)
-        })
-}
-
 module.exports = interestController
