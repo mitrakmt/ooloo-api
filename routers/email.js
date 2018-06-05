@@ -59,7 +59,7 @@ emailRouter.route('/signup')
      *
      * @apiParam {String} email Email of account to reset password of.
      *
-     * @apiSuccess {Bool} subscribed Bool of whether email send was successful.
+     * @apiSuccess {Bool} subscribed Bool of whether email was sent successfully.
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
