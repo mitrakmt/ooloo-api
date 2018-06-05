@@ -16,8 +16,7 @@ module.exports = (db) => {
             required: true
         },
         university: {
-            type: Sequelize.STRING,
-            required: true
+            type: Sequelize.STRING
         },
         password: {
             type: Sequelize.STRING,
@@ -26,6 +25,10 @@ module.exports = (db) => {
         email_verified: {
             type: Sequelize.BOOLEAN,
             defaultValue: false
+        },
+        role: {
+            type: Sequelize.STRING,
+            defaultValue: 'User'
         }
     }, {
         freezeTableName: true

@@ -2,9 +2,9 @@ let authHelpers = {}
 let jwt = require('jsonwebtoken')
 let bcrypt = require('bcryptjs')
 
-authHelpers.generateTokens = (id) => {
+authHelpers.generateTokens = (id, role) => {
   let token = jwt.sign({
-    id
+    id, role
   }, process.env.JWT_SECRET)
 
   return token
