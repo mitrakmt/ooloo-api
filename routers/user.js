@@ -29,8 +29,7 @@ userRouter.route('/')
      *       "email": "nick.mitrakos@gmail.com",
      *       "username": "nmitrakos",
      *       "email_verified": false,
-     *       "role": "User",
-     *       "interests": []
+     *       "role": "Player"
      *     }
      *
      * @apiError Unauthorized Not an authorized or authenticated user.

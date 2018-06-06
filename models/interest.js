@@ -63,28 +63,4 @@ interestModel.GET_AVAILABLE_INTERESTS = () => {
         })
 }
 
-interestModel.ADD_MASTER_INTEREST = (interest) => {
-    return Interest.create({
-        name: interest
-    })
-    .then(interest => {
-        return {
-            interest
-        }
-    })
-}
-
-interestModel.DELETE_MASTER_INTEREST = (interestId) => {
-    return Interest.destroy({
-        where: {
-            id: interestId
-        }
-    })
-    .then(interest => {
-        return {
-            deleted: true
-        }
-    })
-}
-
 module.exports = interestModel

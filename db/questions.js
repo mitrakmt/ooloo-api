@@ -1,39 +1,37 @@
 let Sequelize = require('sequelize')
 
 module.exports = (db) => {    
-    const Users = db.define('users', {
-        name: {
-            type: Sequelize.STRING
-        },
-        email: {
+    const Questions = db.define('questions', {
+        question: {
             type: Sequelize.STRING,
-            unique: true,
             required: true
         },
-        username: {
-            type: Sequelize.STRING,
-            unique: true,
+        answers: {
+            type: Sequelize.JSON,
             required: true
         },
-        university: {
+        correctAnswer: {
+            type: Sequelize.STRING,
+            required: true
+        },
+        difficulty: {
             type: Sequelize.INTEGER,
             required: true
         },
-        password: {
-            type: Sequelize.STRING,
+        topics: {
+            type: Sequelize.JSON,
             required: true
         },
-        email_verified: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
+        image: {
+            type: Sequelize.STRING
         },
-        isAdmin: {
+        isActive: {
             type: Sequelize.BOOLEAN,
-            defaultValue: false
+            defaultValue: true
         }
     }, {
         freezeTableName: true
     })
 
-    return Users
+    return Questions
 }

@@ -23,7 +23,7 @@ userController.SIGN_UP = (req, res) => {
                     error: response.error
                 })
             } else {
-                let Authorization = authHelpers.generateTokens(response.user.id)
+                let Authorization = authHelpers.generateTokens(response.user.id, response.user.isAdmin)
                 let emailData = {
                     from: 'contact@ooloo.app',
                     to: email,
@@ -116,7 +116,7 @@ userController.LOGIN = (req, res) => {
                 }
                 let getTokens = () => {
                     return new Promise((resolve, reject) => {
-                        let tokens = authHelpers.generateTokens(user.id)
+                        let tokens = authHelpers.generateTokens(user.id, user.isAdmin)
                         resolve(tokens)
                     })
                 }

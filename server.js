@@ -30,7 +30,6 @@ app.use((req, res, next) => {
 
 app.use('/api', rootRouter)
 
-//app.listen(PORT, () => console.log('Making some magic on port', PORT))
 const server = http.createServer(app);
 const io = socketIO(server)
 server.listen(PORT, () => console.log('Making some magic on port', PORT))
