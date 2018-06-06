@@ -109,7 +109,5 @@ interestRouter.route('/')
      *     }
      */
     .get(interestController.GET_AVAILABLE_INTERESTS)
-    .post(checkJwt, interestController.ADD_MASTER_INTEREST)
-    .delete(checkJwt, interestController.DELETE_MASTER_INTEREST)
 
 module.exports = interestRouter

@@ -57,38 +57,4 @@ interestController.GET_AVAILABLE_INTERESTS = (req, res) => {
         })
 }
 
-interestController.ADD_MASTER_INTEREST = (req, res) => {
-    let interest = req.body.interest
-    let userRole = req.user.role
-
-    if (userRole === 'User') {
-        res.status(401).send({
-            error: 'Unauthorized'
-        })
-        return;
-    }
-
-    interestModel.ADD_MASTER_INTEREST(interest)
-        .then(response => {
-            res.status(200).send(response)
-        })
-}
-
-interestController.DELETE_MASTER_INTEREST = (req, res) => {
-    let interest = req.body.interest
-    let userRole = req.user.role
-
-    if (userRole === 'User') {
-        res.status(401).send({
-            error: 'Unauthorized'
-        })
-        return;
-    }
-
-    interestModel.DELETE_MASTER_INTEREST(interest)
-        .then(response => {
-            res.status(200).send(response)
-        })
-}
-
 module.exports = interestController
