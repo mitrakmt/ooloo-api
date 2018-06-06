@@ -9,8 +9,8 @@ const expressJWT = require('express-jwt')
 const helmet = require('helmet')
 const db = require('./db')
 const PORT = process.env.PORT || 3001
-const raygun = require('raygun');
-const raygunClient = new raygun.Client().init({ apiKey: process.env.RAYGUN_KEY });
+const http = require('http')
+const socketIO = require('socket.io')
 const app = express()
 
 app.use(logger('dev'))
@@ -30,5 +30,6 @@ app.use((req, res, next) => {
 
 app.use('/api', rootRouter)
 
-app.use(raygunClient.expressHandler);
-app.listen(PORT, () => console.log('Making some magic on port', PORT))
+const server = http.createServer(app);
+const io = socketIO(server)
+server.listen(PORT, () => console.log('Making some magic on port', PORT))
