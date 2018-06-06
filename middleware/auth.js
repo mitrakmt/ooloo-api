@@ -6,7 +6,6 @@ let checkJwt = (req, res, next) => {
     // verifies secret and checks exp
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {
-        console.log('err', err)
         return res.status(401).send({
             error: 'Unauthorized',
             message: 'Invalid token'

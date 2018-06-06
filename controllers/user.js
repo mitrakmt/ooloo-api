@@ -25,10 +25,10 @@ userController.SIGN_UP = (req, res) => {
             } else {
                 let Authorization = authHelpers.generateTokens(response.user.id)
                 let emailData = {
-                    from: 'contact@gymflow.app',
+                    from: 'contact@ooloo.app',
                     to: email,
-                    subject: 'GymFlow - Email Verification',
-                    text: `Please use the following link to verify your email: https://www.gymflow.app/emailverification/${Authorization}`
+                    subject: 'Ooloo - Email Verification',
+                    text: `Please use the following link to verify your email: https://www.ooloo.app/emailverification/${Authorization}`
                 }
                 
                 mailgun.messages().send(emailData, (err, body) => {

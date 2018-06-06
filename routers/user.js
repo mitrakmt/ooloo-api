@@ -49,7 +49,7 @@ userRouter.route('/')
      * @apiGroup User
      * 
      * @apiParam {String} email Email of user.
-     * @apiParam {String} password Password of user.
+     * @apiParam {String} password Password of user. Must be 7 characters in length or greater.
      * @apiParam {String} username Username of user.
      *
      * @apiSuccess {String} jwt JWT for the user.
