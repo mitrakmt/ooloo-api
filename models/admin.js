@@ -3,6 +3,7 @@ let Question = require('../db').Questions
 let User = require('../db').Users
 let authHelpers = require('../helpers/auth')
 let Interest = require('../db').Interests
+let School = require('../db').Schools
 let _ = require('lodash')
 
 // QUESTIONS
@@ -115,6 +116,41 @@ adminModel.CREATE_ADMIN = (email, password, username) => {
                         }
                     })
                 })
+        })
+    })
+}
+
+// SCHOOLS
+adminModel.ADD_SCHOOL = (school) => {
+    return School.create(school)
+        .then(school => {
+            return {
+                school,
+                error: false
+            }
+        })
+}
+
+adminModel.GET_SCHOOLS = () => {
+    return School.findAll({})
+        .then(schools => {
+            return schools
+        })
+}
+
+adminModel.DELETE_SCHOOL = (id) => {
+    return School.findOne({
+        where: {
+            id
+        }
+    })
+    .then(school => {
+        let updatedSchool = school
+        updatedSchool.isActive = false
+        return school.update(
+            updatedSchool
+        ).then(status => {
+            return status
         })
     })
 }

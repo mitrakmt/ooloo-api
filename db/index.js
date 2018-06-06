@@ -5,6 +5,7 @@ const Sequelize = require('sequelize')
 const Users = require('./users')(db)
 const Interests = require('./interests')(db)
 const Questions = require('./questions')(db)
+const Schools = require('./schools')(db)
 
 // CREATE JOIN TABLES
 const UsersInterests = db.define('UsersInterests', {})
@@ -31,5 +32,6 @@ module.exports = {
   Users,
   Interests,
   UsersInterests,
-  Questions
+  Questions,
+  Schools
 }

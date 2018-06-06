@@ -112,4 +112,34 @@ adminController.CREATE_ADMIN = (req, res) => {
         })
 }
 
+// SCHOOLS
+adminController.GET_SCHOOLS = (req, res) => {
+    adminModel.GET_SCHOOLS()
+        .then(response => {
+            res.status(200).send(response)
+        })
+}
+
+adminController.ADD_SCHOOL = (req, res) => {
+    let school = {
+        name: req.body.name,
+        degree: req.body.degree,
+        state: req.body.state
+    }
+
+    adminModel.ADD_SCHOOL(school)
+        .then(response => {
+            res.status(200).send(response)
+        })
+}
+
+adminController.DELETE_SCHOOL = (req, res) => {
+    let schoolId = req.body.schoolId
+
+    adminModel.DELETE_SCHOOL(schoolId)
+        .then(response => {
+            res.status(200).send(response)
+        })
+}
+
 module.exports = adminController

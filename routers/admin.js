@@ -127,4 +127,9 @@ adminRouter.route('/interest')
     .post(checkAdmin, adminController.ADD_MASTER_INTEREST)
     .delete(checkAdmin, adminController.DELETE_MASTER_INTEREST)
 
+adminRouter.route('/school')
+    .get(checkAdmin, adminController.GET_SCHOOLS)
+    .post(checkAdmin, adminController.ADD_SCHOOL)
+    .delete(checkAdmin, adminController.DELETE_SCHOOL)
+
 module.exports = adminRouter
