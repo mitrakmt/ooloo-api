@@ -37,7 +37,7 @@ interestRouter.route('/')
    * 
    * @apiHeader (Authorization) {String} authorization Authorization token (normally a JWT included "Bearer" at the beginning, but please exclude that text before the token).
    * 
-   * @apiParam {String} interest Interest to add.
+   * @apiParam {Array} interests Array of interests to add.
    *
    * @apiSuccess {Bool} added Boolean of successful addition
    *
@@ -109,7 +109,7 @@ interestRouter.route('/')
      *     }
      */
     .get(interestController.GET_AVAILABLE_INTERESTS)
-    .post(interestController.ADD_MASTER_INTEREST)
-    .delete(interestController.DELETE_MASTER_INTEREST)
+    .post(checkJwt, interestController.ADD_MASTER_INTEREST)
+    .delete(checkJwt, interestController.DELETE_MASTER_INTEREST)
 
 module.exports = interestRouter
