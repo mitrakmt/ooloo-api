@@ -1,20 +1,45 @@
-const {pickInterest} = require('./util'); 
+const { findOverlap, findOpponent } = require('./util');
 
-test('pickInterest should pick a random interest based on players mutual interests',()=>{
-	const array1 = ['foo','bar','baz']; 
-	const array2 = ['thing','baz','otherThing'];
-	const array3 = ['bar', 'foo', 'unrelated'];
 
-	const result = pickInterest(array1, array3);
-	const isCorrect = (result === 'foo' || result === 'bar'); 
+test('findOverlap should return all overlapping interests ', () => {
+    const array1 = ['foo', 'bar', 'baz'];
+    const array2 = ['foo', 'bar', 'unrelated'];
 
-	expect(pickInterest(array1, array2)).toBe('baz');
-	expect(isCorrect).toBe(true)
-}); 
+    const result = findOverlap(array1, array2);
 
-test('pickInterest should return null if no overlap',()=>{
-	const array1=['foo', 'bar','baz'];
-	const array2=['test', 'other','things'];
+    expect(result).toEqual(['foo', 'bar']);
+});
+test('findOverlap should return null if there is no match', () => {
+    const array1 = ['foo', 'bar', 'baz'];
+    const array2 = ['an', 'array', 'unrelated'];
 
-	expect(pickInterest(array1,array2)).toBe(null); 
-})
+    const result = findOverlap(array1, array2);
+
+    expect(result).toEqual(null);
+});
+
+test('findOpponent should return the index and mutual interests of opponent that has overlap', () => {
+    const queue = [
+        ['foo', 'bar', 'baz'],
+        ['other', 'thing', 'unrelated'],
+        ['1', '2', '3']
+    ];
+    const interests = ['thing', 'other'];
+
+    const result = findOpponent(interests, queue);
+
+    expect(result).toEqual({ index: 1, interests: ['other', 'thing'] })
+});
+
+test('findOpponent should return null if there is no opponent', () => {
+    const queue = [
+        ['foo', 'bar', 'baz'],
+        ['other', 'thing', 'unrelated'],
+        ['1', '2', '3']
+    ];
+    const interests = ['michelangelo', 'donatello'];
+
+    const result = findOpponent(interests, queue);
+
+    expect(result).toEqual(null);
+});

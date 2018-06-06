@@ -10,6 +10,8 @@ const helmet = require('helmet')
 const db = require('./db')
 // const jwt = require('jsonwebtoken')
 const PORT = process.env.PORT || 3001
+const http = require('http')
+const socketIO = require('socket.io')
 const app = express()
 
 app.use(logger('dev'))
@@ -30,4 +32,7 @@ app.use((req, res, next) => {
 // app.use(expressJWT ({ secret: 'this is the secret token!' }).unless({ path: ['/api/auth/signin', '/api/auth/signup'] }))
 app.use('/api', rootRouter)
 
-app.listen(PORT, () => console.log('Making some magic on port', PORT))
+//app.listen(PORT, () => console.log('Making some magic on port', PORT))
+const server = http.createServer(app);
+const io = socketIO(server)
+server.listen(PORT, () => console.log('Making some magic on port', PORT))
