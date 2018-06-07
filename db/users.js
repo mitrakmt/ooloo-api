@@ -30,6 +30,9 @@ module.exports = (db) => {
         isAdmin: {
             type: Sequelize.BOOLEAN,
             defaultValue: false
+        },
+        image: {
+            type: Sequelize.STRING,
         }
     }, {
         freezeTableName: true

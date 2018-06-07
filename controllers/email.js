@@ -4,6 +4,8 @@ let mailchimp = new Mailchimp(process.env.MAILCHIMP_API);
 let mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN });
 let emailModel = require('../models/email')
 let generatePasswordResetToken = require('../helpers/auth').generatePasswordResetToken
+const raygun = require('raygun');
+const raygunClient = new raygun.Client().init({ apiKey: process.env.RAYGUN_KEY });
 
 emailController.CONTACT_US = (req, res) => {
   let message = req.body.message
@@ -20,6 +22,7 @@ emailController.CONTACT_US = (req, res) => {
 
   mailgun.messages().send(emailData, (err, body) => {
     if (err) {
+      raygunClient.send(new Error('EmailContactUs'), err, function () {}, req, ['Email']);
       res.status(400).send({
         sent: false,
         error: err
@@ -66,6 +69,7 @@ emailController.PASSWORD_RESET = (req, res) => {
 
   mailgun.messages().send(emailData, (err, body) => {
     if (err) {
+      raygunClient.send(new Error('EmailPasswordReset'), err, function () {}, req, ['Email']);
       res.status(400).send({
         sent: false,
         error: err

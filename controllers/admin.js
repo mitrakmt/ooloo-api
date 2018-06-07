@@ -3,6 +3,8 @@ let adminModel = require('../models/admin')
 let authHelpers = require('../helpers/auth')
 let mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN });
 let verifyToken = require('../helpers/auth').verifyToken
+const raygun = require('raygun');
+const raygunClient = new raygun.Client().init({ apiKey: process.env.RAYGUN_KEY });
 
 // QUESTIONS
 adminController.ADD_QUESTION = (req, res) => {
@@ -34,8 +36,6 @@ adminController.GET_ACTIVE_QUESTIONS = (req, res) => {
             res.status(200).send(response)
         })
 }
-
-
 
 adminController.DELETE_QUESTION = (req, res) => {
     const questionId = req.body.questionId
@@ -101,6 +101,7 @@ adminController.CREATE_ADMIN = (req, res) => {
                 
                 mailgun.messages().send(emailData, (err, body) => {
                     if (err) {
+                        raygunClient.send(new Error('AdminCreateAdmin'), err, function () {}, req, ['Admin']);
                         console.log('Error in sending verification email to user ' + email)
                     }
                 });

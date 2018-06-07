@@ -2,6 +2,8 @@ let userModel = {}
 let User = require('../db').Users
 let authHelpers = require('../helpers/auth')
 let _ = require('lodash')
+const raygun = require('raygun');
+const raygunClient = new raygun.Client().init({ apiKey: process.env.RAYGUN_KEY });
 
 userModel.SIGN_UP = (email, password, username) => {
     return User.findOne({

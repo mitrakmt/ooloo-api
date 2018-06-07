@@ -1,6 +1,8 @@
 
 let interestController = {}
 let interestModel = require('../models/interest')
+const raygun = require('raygun');
+const raygunClient = new raygun.Client().init({ apiKey: process.env.RAYGUN_KEY });
 
 interestController.GET_INTERESTS = (req, res) => {
     let userId = req.user.id

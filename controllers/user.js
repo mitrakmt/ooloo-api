@@ -3,6 +3,8 @@ let userModel = require('../models/user')
 let authHelpers = require('../helpers/auth')
 let Promise = require("bluebird")
 let mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN });
+const raygun = require('raygun');
+const raygunClient = new raygun.Client().init({ apiKey: process.env.RAYGUN_KEY });
 let verifyToken = require('../helpers/auth').verifyToken
 
 userController.SIGN_UP = (req, res) => {
@@ -33,7 +35,7 @@ userController.SIGN_UP = (req, res) => {
                 
                 mailgun.messages().send(emailData, (err, body) => {
                     if (err) {
-                        console.log('Error in sending verification email to user ' + email)
+                        raygunClient.send(new Error('Signup'), err, function () {}, req, ['User']);
                     }
                 });
 
