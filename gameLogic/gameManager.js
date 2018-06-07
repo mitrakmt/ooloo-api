@@ -8,7 +8,7 @@ const setupGame = (gameObject, _config = config)=>{
 	const {players} = gameObject;
 	gameObject.startTime = Date.now();
 	gameObject.finishedTime = new Array(2); 
-	gameObject.answers = createAnswerArray(_config.questions);
+	gameObject.answers = createAnswerArray(gameObject.questions.length);
 	players.forEach(({socket}, index)=>{
 		//What other info should this have?
 		socket.emit('gameStart', 
@@ -18,6 +18,7 @@ const setupGame = (gameObject, _config = config)=>{
 			questions: _config.questions,
 			playerIndex: index
 		});
+		sendQuestion(socket, 0, gameObject); 
 		socket.on('answer', ({playerIndex, answer, questionNumber})=>{
 			answerReceived(socket, playerIndex, answer, questionNumber, gameObject);
 		});
@@ -37,6 +38,7 @@ const createAnswerArray = (questions)=>{
 	for(let i = 0; i < questions; i++){
 		array.push({}); 
 	}
+	return array;
 };
 //TODO Currently tears down when one player finishes.
 const gameFinished = (gameObject)=>{
@@ -51,11 +53,6 @@ const sendFinalResults = (gameObject)=>{
 		socket.emit('results', {results});
 	});
 };
-const sendResults = (resultsObj, gameObject)=>{
-	gameObject.players.forEach(({socket})=>{
-		socket.emit('answerResult', resultObj); 
-	});
-};
 const tearDown = (gameObject)=>{
 	gameObject.players.forEach(({socket})=>{
 		socket.removeAllListeners('answer');
@@ -63,13 +60,19 @@ const tearDown = (gameObject)=>{
 	});
 };
 const answerReceived = (socket, playerIndex, answer, questionNumber, gameObject)=>{
-	const resultObj = answerReceived(questionNumber, answer, playerIndex, gameObject);
-	sendResults(socket, resultObj, gameObject);
-	if(questionNumber >= _config.questions){
+	const resultsObj = checkAnswer(questionNumber, answer, playerIndex, gameObject);
+	sendResults(resultsObj, gameObject);
+	console.log(questionNumber, gameObject.questions.length); 
+	if(questionNumber + 1 >= gameObject.questions.length){
 		answeredAllQuestions(socket, gameObject); 
 	}else{
 		sendQuestion(socket, questionNumber + 1, gameObject);
 	}
+};
+const sendResults = (resultsObj, gameObject)=>{
+	gameObject.players.forEach(({socket})=>{
+		socket.emit('answerResult', resultsObj); 
+	});
 };
 const checkAnswer = (questionNumber, answer, playerIndex, gameObject)=>{
 	const correctAnswer = gameObject.questions[questionNumber].answer;
@@ -86,7 +89,7 @@ const answeredAllQuestions = (socket, gameObject, timerID)=>{
 };
 const sendQuestion = (socket, questionNumber, gameObject)=>{
 	const {question, possibleAnswers} = gameObject.questions[questionNumber];
-	socket.emit('question', {question, possibleAnswers});
+	socket.emit('question', {question, possibleAnswers, questionNumber});
 };
 const timerExpired = (gameObject)=>{
 	gameObject.finishedTime = gameObject.finishedTime.map((time)=>{
