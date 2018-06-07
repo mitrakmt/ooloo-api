@@ -3,6 +3,7 @@ let User = require('../db').Users
 let Interest = require('../db').Interests
 let UsersInterests = require('../db').UsersInterests
 let _ = require('lodash')
+let sendError = require('../helpers/sendError')
 
 interestModel.GET_INTERESTS = (userId) => {
     return User.findOne({
@@ -25,10 +26,22 @@ interestModel.ADD_INTEREST = (userId, interestId) => {
             }
         })
         .then(interest => {
+            if (!interest) {
+                sendError('AddInterest', 'Add interest failure - no master interest found for that ID', interestId, 'Interest')
+                return {
+                    success: false
+                }
+            }
             return interest.setUsers(
                 userId
             )
             .then(status => {
+                if (!status) {
+                    sendError('AddInterest', 'Add interest failure - could not setUser interest', interestId, 'Interest')
+                    return {
+                        success: false
+                    }
+                }
                 return {
                     success: true
                 }
@@ -47,6 +60,12 @@ interestModel.DELETE_INTEREST = (userId, interestId) => {
             userId
         )
         .then(status => {
+            if (!status) {
+                sendError('DeleteInterest', 'Delete interest failure', interestId, 'Interest')
+                return {
+                    error: "Delete interest failure"
+                }
+            }
             return {
                 deleted: true
             }
@@ -61,30 +80,6 @@ interestModel.GET_AVAILABLE_INTERESTS = () => {
                 interests
             }
         })
-}
-
-interestModel.ADD_MASTER_INTEREST = (interest) => {
-    return Interest.create({
-        name: interest
-    })
-    .then(interest => {
-        return {
-            interest
-        }
-    })
-}
-
-interestModel.DELETE_MASTER_INTEREST = (interestId) => {
-    return Interest.destroy({
-        where: {
-            id: interestId
-        }
-    })
-    .then(interest => {
-        return {
-            deleted: true
-        }
-    })
 }
 
 module.exports = interestModel

@@ -3,6 +3,7 @@ let userModel = require('../models/user')
 let authHelpers = require('../helpers/auth')
 let Promise = require("bluebird")
 let mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN });
+let sendError = require('../helpers/sendError')
 let verifyToken = require('../helpers/auth').verifyToken
 
 userController.SIGN_UP = (req, res) => {
@@ -23,7 +24,7 @@ userController.SIGN_UP = (req, res) => {
                     error: response.error
                 })
             } else {
-                let Authorization = authHelpers.generateTokens(response.user.id)
+                let Authorization = authHelpers.generateTokens(response.user.id, response.user.isAdmin)
                 let emailData = {
                     from: 'contact@ooloo.app',
                     to: email,
@@ -33,7 +34,7 @@ userController.SIGN_UP = (req, res) => {
                 
                 mailgun.messages().send(emailData, (err, body) => {
                     if (err) {
-                        console.log('Error in sending verification email to user ' + email)
+                        sendError('Signup', err, req, 'User')
                     }
                 });
 
@@ -116,7 +117,7 @@ userController.LOGIN = (req, res) => {
                 }
                 let getTokens = () => {
                     return new Promise((resolve, reject) => {
-                        let tokens = authHelpers.generateTokens(user.id)
+                        let tokens = authHelpers.generateTokens(user.id, user.isAdmin)
                         resolve(tokens)
                     })
                 }
