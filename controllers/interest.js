@@ -1,6 +1,7 @@
 
 let interestController = {}
 let interestModel = require('../models/interest')
+let sendError = require('../helpers/sendError')
 
 interestController.GET_INTERESTS = (req, res) => {
     let userId = req.user.id
@@ -30,11 +31,6 @@ interestController.ADD_INTEREST = (req, res) => {
             success: true
         })
     });
-
-    interestModel.ADD_INTEREST(userId, interests)
-        .then(response => {
-            res.status(200).send(response)
-        })
 }
 
 interestController.DELETE_INTEREST = (req, res) => {
