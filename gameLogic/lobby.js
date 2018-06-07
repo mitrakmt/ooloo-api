@@ -33,17 +33,26 @@ const queueOrMatch = (playerObj, {_playerQueue = playerQueue, _getQuestions = ge
 		setupGame(gameObject); 
 	}
 };
-
-const playerConnects = async(socket, token, {_queueOrMatch = queueOrMatch} = {})=>{
+const botGame = (playerObj)=>{
+	const gameObject = {
+			interests: ['foo', 'bar'],
+			players: [playerObj],
+			questions: mockQuestions
+		};
+	setupGame(gameObject); 
+};
+const playerConnects = async(socket, token, {id, _queueOrMatch = queueOrMatch} = {})=>{
 	try{
 		const {decoded:{id}, error} = await verifyToken(token);
 		if(error){
 			throw error; 
 		}
-
-		const interests = await GET_INTERESTS(id); 
+		//TODO put back when interests are more of a thing
+		//const interests = await GET_INTERESTS(id); 
+		const interests = ['doctoring']; 
 		const playerObject = {socket, id, interests};
-		_queueOrMatch(playerObject); 
+		//_queueOrMatch(playerObject); 
+		botGame(playerObject); 
 	}catch(error){
 		console.error(error); 
 	}

@@ -15,6 +15,7 @@ const raygun = require('raygun');
 const raygunClient = new raygun.Client().init({ apiKey: process.env.RAYGUN_KEY });
 const app = express()
 
+
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -34,4 +35,6 @@ app.use('/api', rootRouter)
 
 const server = http.createServer(app);
 const io = socketIO(server)
+
+require('./gameLogic/connect')(io); 
 server.listen(PORT, () => console.log('Making some magic on port', PORT))
