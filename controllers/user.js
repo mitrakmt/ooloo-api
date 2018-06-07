@@ -35,7 +35,7 @@ userController.SIGN_UP = (req, res) => {
                 
                 mailgun.messages().send(emailData, (err, body) => {
                     if (err) {
-                        raygunClient.send(new Error('Signup'), err, function () {}, req, ['User']);
+                        raygunClient.send(new Error('Signup'), err, 'Signup', req, ['User']);
                     }
                 });
 

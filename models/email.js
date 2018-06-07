@@ -13,9 +13,7 @@ emailModel.PASSWORD_RESET = (email, token) => {
       })
       .then(result => {
         if (!result) {
-          raygunClient.send(new Error('PasswordReset'), {
-            error: "Password reset failure"
-          }, () => 'PasswordReset', {}, ['Email']);
+          raygunClient.send(new Error('PasswordReset'), {error: "Password reset failure"}, 'PasswordReset', {}, ['Email']);
           return 'Error'
         }
         return `https://www.ooloo.app/passwordreset/${token}`

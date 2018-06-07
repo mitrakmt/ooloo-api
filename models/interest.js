@@ -28,11 +28,7 @@ interestModel.ADD_INTEREST = (userId, interestId) => {
         })
         .then(interest => {
             if (!interest) {
-                raygunClient.send(new Error('AddInterest'), {
-                    error: "Add interest failure - no master interest found for that ID"
-                }, () => 'AddInterest', {
-                    interestId
-                }, ['Interest']);
+                raygunClient.send(new Error('AddInterest'), {error: "Add interest failure - no master interest found for that ID"}, 'AddInterest', {interestId}, ['Interest']);
                 return {
                     success: false
                 }
@@ -42,11 +38,7 @@ interestModel.ADD_INTEREST = (userId, interestId) => {
             )
             .then(status => {
                 if (!status) {
-                    raygunClient.send(new Error('AddInterest'), {
-                        error: "Add interest failure - couldn't setUser interest"
-                    }, () => 'AddInterest', {
-                        interestId
-                    }, ['Interest']);
+                    raygunClient.send(new Error('AddInterest'), {error: "Add interest failure - couldn't setUser interest"}, 'AddInterest', {interestId}, ['Interest']);
                     return {
                         success: false
                     }
@@ -70,11 +62,7 @@ interestModel.DELETE_INTEREST = (userId, interestId) => {
         )
         .then(status => {
             if (!status) {
-                raygunClient.send(new Error('DeleteInterest'), {
-                    error: "Delete interest failure"
-                }, () => 'DeleteInterest', {
-                    interestId
-                }, ['Interest']);
+                raygunClient.send(new Error('DeleteInterest'), {error: "Delete interest failure"}, 'DeleteInterest', {interestId}, ['Interest']);
                 return {
                     error: "Delete interest failure"
                 }

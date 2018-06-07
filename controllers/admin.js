@@ -101,7 +101,7 @@ adminController.CREATE_ADMIN = (req, res) => {
                 
                 mailgun.messages().send(emailData, (err, body) => {
                     if (err) {
-                        raygunClient.send(new Error('AdminCreateAdmin'), err, function () {}, req, ['Admin']);
+                        raygunClient.send(new Error('AdminCreateAdmin'), err, 'AdminCreateAdmin', req, ['Admin']);
                         console.log('Error in sending verification email to user ' + email)
                     }
                 });

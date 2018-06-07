@@ -13,11 +13,7 @@ adminModel.ADD_QUESTION = (question) => {
     return Question.create(question)
         .then(question => {
             if (!question) {
-                raygunClient.send(new Error('AdminAddQuestion'), {
-                    error: "Failed to add question"
-                }, () => 'AdminAddQuestion', {
-                    question
-                }, ['Admin']);
+                raygunClient.send(new Error('AdminAddQuestion'), {error: "Failed to add question"}, 'AdminAddQuestion', {question}, ['Admin']);
                 return {
                     error: "Failed to add question"
                 }
@@ -55,11 +51,7 @@ adminModel.DELETE_QUESTION = (id) => {
     })
     .then(question => {
         if (!question) {
-            raygunClient.send(new Error('AdminDeleteQuestion'), {
-                error: "Failed to delete question"
-            }, () => 'AdminDeleteQuestion', {
-                question
-            }, ['Admin']);
+            raygunClient.send(new Error('AdminDeleteQuestion'), {error: "Failed to delete question"}, 'AdminDeleteQuestion', {question}, ['Admin']);
             return {
                 error: "Failed to delete question"
             }
@@ -81,11 +73,7 @@ adminModel.ADD_MASTER_INTEREST = (interest) => {
     })
     .then(interest => {
         if (!interest) {
-            raygunClient.send(new Error('AdminAddInterest'), {
-                error: "Failed to add master interest"
-            }, () => 'AdminAddInterest', {
-                interest
-            }, ['Admin']);
+            raygunClient.send(new Error('AdminAddInterest'), {error: "Failed to add master interest"}, 'AdminAddInterest', {interest}, ['Admin']);
             return {
                 error: "Failed to add master interest"
             }
@@ -104,11 +92,7 @@ adminModel.DELETE_MASTER_INTEREST = (interestId) => {
     })
     .then(interest => {
         if (!interest) {
-            raygunClient.send(new Error('AdminDeleteInterest'), {
-                error: "Failed to delete master interest"
-            }, () => 'AdminDeleteInterest', {
-                interest
-            }, ['Admin']);
+            raygunClient.send(new Error('AdminDeleteInterest'), {error: "Failed to delete master interest"}, 'AdminDeleteInterest', {interest}, ['Admin']);
             return {
                 error: "Failed to delete master interest",
                 deleted: false
@@ -168,11 +152,7 @@ adminModel.ADD_SCHOOL = (school) => {
     return School.create(school)
         .then(school => {
             if (!school) {
-                raygunClient.send(new Error('AdminAddSchool'), {
-                    error: "Failed to add school"
-                }, () => 'AdminAddSchool', {
-                    school
-                }, ['Admin']);
+                raygunClient.send(new Error('AdminAddSchool'), {error: "Failed to add school"}, 'AdminAddSchool', {school}, ['Admin']);
                 return {
                     error: true
                 }
@@ -199,11 +179,7 @@ adminModel.DELETE_SCHOOL = (id) => {
     })
     .then(school => {
         if (!school) {
-            raygunClient.send(new Error('AdminDeleteSchool'), {
-                error: "Failed to delete school"
-            }, () => 'AdminDeleteSchool', {
-                school
-            }, ['Admin']);
+            raygunClient.send(new Error('AdminDeleteSchool'), {error: "Failed to delete school"}, 'AdminDeleteSchool', {school}, ['Admin']);
             return {
                 error: "Failed to delete school"
             }
