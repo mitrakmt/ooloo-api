@@ -12,6 +12,6 @@ module.exports = [
 	{
 		question: "Call and",
 		possibleAnswers: ['Hang up', 'Response', 'Uncle'],
-		answer: 'Reponse'
+		answer: 'Response'
 	}
 ];

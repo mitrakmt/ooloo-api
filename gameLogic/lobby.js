@@ -47,7 +47,9 @@ const playerConnects = async(socket, token, {id, _queueOrMatch = queueOrMatch} =
 		if(error){
 			throw error; 
 		}
-		const interests = await GET_INTERESTS(id); 
+		//TODO put back when interests are more of a thing
+		//const interests = await GET_INTERESTS(id); 
+		const interests = ['doctoring']; 
 		const playerObject = {socket, id, interests};
 		//_queueOrMatch(playerObject); 
 		botGame(playerObject); 
