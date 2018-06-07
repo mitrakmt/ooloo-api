@@ -30,7 +30,7 @@ interestModel.ADD_INTEREST = (userId, interestId) => {
             if (!interest) {
                 raygunClient.send(new Error('AddInterest'), {
                     error: "Add interest failure - no master interest found for that ID"
-                }, () => {}, {
+                }, () => 'AddInterest', {
                     interestId
                 }, ['Interest']);
                 return {
