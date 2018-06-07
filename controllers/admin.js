@@ -3,7 +3,7 @@ let adminModel = require('../models/admin')
 let authHelpers = require('../helpers/auth')
 let mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN });
 let verifyToken = require('../helpers/auth').verifyToken
-let sendError = require('../helpers/raygun')
+let sendError = require('../helpers/sendError')
 
 // QUESTIONS
 adminController.ADD_QUESTION = (req, res) => {

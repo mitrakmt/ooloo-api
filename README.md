@@ -14,5 +14,7 @@
 - Always branch off of "dev" branch
 - All feature branches should be named "feat/someFeatureName"
 ### Error Handling
-- We are utilizing Raygun (https://raygun.com/docs/languages/node-js) to handle error reporting in the application. When catching a fatal error, or an error that should not arrise normally, please use the template below.
+- We are utilizing Raygun (https://raygun.com/docs/languages/node-js) to handle error reporting in the application. When catching a fatal error, or an error that should not arrise normally, please follow the steps below
+1) let sendError = require('../helpers/sendError')
+2) Send error using the sendError function. Example given below:
 ```raygunClient.send(new Error('FunctionName'), {error: "Please give a specific error description here"}, 'FunctionName', {requestBodyThatIsRelevant}, ['fileName']);```

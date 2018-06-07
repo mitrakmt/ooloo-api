@@ -3,7 +3,7 @@ let User = require('../db').Users
 let Interest = require('../db').Interests
 let UsersInterests = require('../db').UsersInterests
 let _ = require('lodash')
-let sendError = require('../helpers/raygun')
+let sendError = require('../helpers/sendError')
 
 interestModel.GET_INTERESTS = (userId) => {
     return User.findOne({

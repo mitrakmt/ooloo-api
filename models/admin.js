@@ -5,7 +5,7 @@ let authHelpers = require('../helpers/auth')
 let Interest = require('../db').Interests
 let School = require('../db').Schools
 let _ = require('lodash')
-let sendError = require('../helpers/raygun')
+let sendError = require('../helpers/sendError')
 
 // QUESTIONS
 adminModel.ADD_QUESTION = (question) => {
