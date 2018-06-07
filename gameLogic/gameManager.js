@@ -65,7 +65,7 @@ const sendFinalResults = (gameObject)=>{
 		gameID: gameObject.gameID
 	};
 	gameObject.players.forEach(({socket})=>{
-		socket.emit('gameResults', {results});
+		socket.emit('gameResults', {...results});
 	});
 };
 const tearDown = (gameObject)=>{
