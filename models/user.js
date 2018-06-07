@@ -71,7 +71,7 @@ userModel.GET_USER = (id) => {
             id
         },
         attributes: {
-            exclude: ['createdAt', 'updatedAt', 'password', 'id']
+            exclude: ['createdAt', 'updatedAt', 'password']
         }
     })
     .then(user => {

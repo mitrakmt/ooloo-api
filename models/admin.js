@@ -78,6 +78,20 @@ adminModel.DELETE_MASTER_INTEREST = (interestId) => {
 }
 
 // ADMIN
+adminModel.GET_ADMINS = () => {
+    return User.findAll({
+        where: {
+            isAdmin: true
+        },
+        attributes: {
+            exclude: ['createdAt', 'updatedAt', 'password', 'isAdmin']
+        }
+    })
+        .then(admins => {
+            return admins
+        })
+}
+
 adminModel.CREATE_ADMIN = (email, password, username) => {
     return User.findOne({
         where: {
