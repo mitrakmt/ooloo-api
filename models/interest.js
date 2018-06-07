@@ -3,8 +3,7 @@ let User = require('../db').Users
 let Interest = require('../db').Interests
 let UsersInterests = require('../db').UsersInterests
 let _ = require('lodash')
-const raygun = require('raygun');
-const raygunClient = new raygun.Client().init({ apiKey: process.env.RAYGUN_KEY });
+let sendError = require('../helpers/raygun')
 
 interestModel.GET_INTERESTS = (userId) => {
     return User.findOne({
@@ -28,7 +27,7 @@ interestModel.ADD_INTEREST = (userId, interestId) => {
         })
         .then(interest => {
             if (!interest) {
-                raygunClient.send(new Error('AddInterest'), {error: "Add interest failure - no master interest found for that ID"}, 'AddInterest', {interestId}, ['Interest']);
+                sendError('AddInterest', 'Add interest failure - no master interest found for that ID', interestId, 'Interest')
                 return {
                     success: false
                 }
@@ -38,7 +37,7 @@ interestModel.ADD_INTEREST = (userId, interestId) => {
             )
             .then(status => {
                 if (!status) {
-                    raygunClient.send(new Error('AddInterest'), {error: "Add interest failure - couldn't setUser interest"}, 'AddInterest', {interestId}, ['Interest']);
+                    sendError('AddInterest', 'Add interest failure - could not setUser interest', interestId, 'Interest')
                     return {
                         success: false
                     }
@@ -62,7 +61,7 @@ interestModel.DELETE_INTEREST = (userId, interestId) => {
         )
         .then(status => {
             if (!status) {
-                raygunClient.send(new Error('DeleteInterest'), {error: "Delete interest failure"}, 'DeleteInterest', {interestId}, ['Interest']);
+                sendError('DeleteInterest', 'Delete interest failure', interestId, 'Interest')
                 return {
                     error: "Delete interest failure"
                 }
