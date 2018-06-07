@@ -53,6 +53,13 @@ adminModel.DELETE_QUESTION = (id) => {
 }
 
 // INTERESTS
+adminModel.GET_MASTER_INTERESTS = () => {
+    return Interest.findAll({})
+        .then(interests => {
+            return interests
+        })
+}
+
 adminModel.ADD_MASTER_INTEREST = (interest) => {
     return Interest.create({
         name: interest

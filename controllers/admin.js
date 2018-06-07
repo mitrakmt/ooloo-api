@@ -47,6 +47,13 @@ adminController.DELETE_QUESTION = (req, res) => {
 }
 
 // INTERESTS
+adminController.GET_MASTER_INTERESTS = (req, res) => {
+    adminModel.GET_MASTER_INTERESTS()
+        .then(response => {
+            res.status(200).send(response)
+        })
+}
+
 adminController.ADD_MASTER_INTEREST = (req, res) => {
     let interest = req.body.interest
 

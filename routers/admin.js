@@ -124,6 +124,7 @@ adminRouter.route('/question/all')
  .get(checkAdmin, adminController.GET_ALL_QUESTIONS)
 
 adminRouter.route('/interest')
+    .get(checkAdmin, adminController.GET_MASTER_INTERESTS)
     .post(checkAdmin, adminController.ADD_MASTER_INTEREST)
     .delete(checkAdmin, adminController.DELETE_MASTER_INTEREST)
 
