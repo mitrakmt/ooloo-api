@@ -22,7 +22,7 @@ emailController.CONTACT_US = (req, res) => {
 
   mailgun.messages().send(emailData, (err, body) => {
     if (err) {
-      raygunClient.send(new Error('EmailContactUs'), err, function () {}, req, ['Email']);
+      raygunClient.send(new Error('EmailContactUs'), err, () => 'EmailContactUs', req, ['Email']);
       res.status(400).send({
         sent: false,
         error: err
@@ -69,7 +69,7 @@ emailController.PASSWORD_RESET = (req, res) => {
 
   mailgun.messages().send(emailData, (err, body) => {
     if (err) {
-      raygunClient.send(new Error('EmailPasswordReset'), err, function () {}, req, ['Email']);
+      raygunClient.send(new Error('EmailPasswordReset'), err, () => 'EmailPasswordReset', req, ['Email']);
       res.status(400).send({
         sent: false,
         error: err

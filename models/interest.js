@@ -44,7 +44,7 @@ interestModel.ADD_INTEREST = (userId, interestId) => {
                 if (!status) {
                     raygunClient.send(new Error('AddInterest'), {
                         error: "Add interest failure - couldn't setUser interest"
-                    }, () => {}, {
+                    }, () => 'AddInterest', {
                         interestId
                     }, ['Interest']);
                     return {

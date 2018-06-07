@@ -15,7 +15,7 @@ adminModel.ADD_QUESTION = (question) => {
             if (!question) {
                 raygunClient.send(new Error('AdminAddQuestion'), {
                     error: "Failed to add question"
-                }, () => {}, {
+                }, () => 'AdminAddQuestion', {
                     question
                 }, ['Admin']);
                 return {
@@ -57,7 +57,7 @@ adminModel.DELETE_QUESTION = (id) => {
         if (!question) {
             raygunClient.send(new Error('AdminDeleteQuestion'), {
                 error: "Failed to delete question"
-            }, () => {}, {
+            }, () => 'AdminDeleteQuestion', {
                 question
             }, ['Admin']);
             return {
@@ -83,7 +83,7 @@ adminModel.ADD_MASTER_INTEREST = (interest) => {
         if (!interest) {
             raygunClient.send(new Error('AdminAddInterest'), {
                 error: "Failed to add master interest"
-            }, () => {}, {
+            }, () => 'AdminAddInterest', {
                 interest
             }, ['Admin']);
             return {
@@ -106,7 +106,7 @@ adminModel.DELETE_MASTER_INTEREST = (interestId) => {
         if (!interest) {
             raygunClient.send(new Error('AdminDeleteInterest'), {
                 error: "Failed to delete master interest"
-            }, () => {}, {
+            }, () => 'AdminDeleteInterest', {
                 interest
             }, ['Admin']);
             return {
@@ -170,7 +170,7 @@ adminModel.ADD_SCHOOL = (school) => {
             if (!school) {
                 raygunClient.send(new Error('AdminAddSchool'), {
                     error: "Failed to add school"
-                }, () => {}, {
+                }, () => 'AdminAddSchool', {
                     school
                 }, ['Admin']);
                 return {
@@ -201,7 +201,7 @@ adminModel.DELETE_SCHOOL = (id) => {
         if (!school) {
             raygunClient.send(new Error('AdminDeleteSchool'), {
                 error: "Failed to delete school"
-            }, () => {}, {
+            }, () => 'AdminDeleteSchool', {
                 school
             }, ['Admin']);
             return {
