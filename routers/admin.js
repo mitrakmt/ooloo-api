@@ -3,7 +3,8 @@ let adminController = require('../controllers/admin')
 const checkAdmin = require('../middleware/admin')
 
 adminRouter.route('/user')
-    .post(adminController.CREATE_ADMIN)
+    .get(checkAdmin, adminController.GET_ADMINS)
+    .post(checkAdmin, adminController.CREATE_ADMIN)
 
 adminRouter.route('/question')
    /**

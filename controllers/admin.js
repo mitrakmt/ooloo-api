@@ -72,6 +72,13 @@ adminController.DELETE_MASTER_INTEREST = (req, res) => {
 }
 
 // ADMIN
+adminController.GET_ADMINS = (req, res) => {
+    adminModel.GET_ADMINS()
+        .then(response => {
+            res.status(200).send(response)
+        })
+}
+
 adminController.CREATE_ADMIN = (req, res) => {
     const adminPassword = req.body.adminPassword
     if (adminPassword === process.env.ADMIN_PASSWORD) {
