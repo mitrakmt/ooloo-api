@@ -25,18 +25,18 @@ adminModel.ADD_QUESTION = (question) => {
 }
 
 adminModel.GET_ALL_QUESTIONS = () => {
-    return Question.findAll({
-        where: {
-            isActive: true
-        }
-    })
+    return Question.findAll({})
         .then(questions => {
             return questions
         })
 }
 
 adminModel.GET_ACTIVE_QUESTIONS = () => {
-    return Question.findAll({})
+    return Question.findAll({
+        where: {
+            isActive: true
+        }
+    })
         .then(questions => {
             return questions
         })
@@ -67,7 +67,11 @@ adminModel.DELETE_QUESTION = (id) => {
 
 // INTERESTS
 adminModel.GET_MASTER_INTERESTS = () => {
-    return Interest.findAll({})
+    return Interest.findAll({
+        where: {
+            isActive: true
+        }
+    })
         .then(interests => {
             return interests
         })
@@ -90,23 +94,27 @@ adminModel.ADD_MASTER_INTEREST = (interest) => {
     })
 }
 
-adminModel.DELETE_MASTER_INTEREST = (interestId) => {
-    return Interest.destroy({
+adminModel.DELETE_MASTER_INTEREST = (id) => {
+    return Interest.findOne({
         where: {
-            id: interestId
+            id
         }
     })
     .then(interest => {
         if (!interest) {
-            sendError('AdminDeleteInterest', 'Failed to delete master question', interest, 'Admin')
+            sendError('AdminDeleteInterest', 'Failed to delete interest', interest, 'Admin')
             return {
-                error: "Failed to delete master interest",
-                deleted: false
+                error: "Failed to delete interest"
             }
         }
-        return {
-            deleted: true
-        }
+
+        let updatedInterest = interest
+        updatedInterest.isActive = false
+        return interest.update(
+            updatedInterest
+        ).then(status => {
+            return status
+        })
     })
 }
 
@@ -185,7 +193,11 @@ adminModel.ADD_SCHOOL = (school) => {
 }
 
 adminModel.GET_SCHOOLS = () => {
-    return School.findAll({})
+    return School.findAll({
+        where: {
+            isActive: true
+        }
+    })
         .then(schools => {
             return schools
         })

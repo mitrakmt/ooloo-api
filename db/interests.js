@@ -5,6 +5,10 @@ module.exports = (db) => {
         name: {
             type: Sequelize.STRING
         },
+        isActive: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: true
+        },
     }, {
         freezeTableName: true
     })
