@@ -55,11 +55,10 @@ adminModel.DELETE_QUESTION = (id) => {
                 error: "Failed to delete question"
             }
         }
-        let updatedQuestion = question
-        updatedQuestion.isActive = false
-        return question.update(
-            updatedQuestion
-        ).then(status => {
+        return question.updateAttributes({
+            isActive: false
+        })
+        .then(status => {
             return status
         })
     })
@@ -108,11 +107,10 @@ adminModel.DELETE_MASTER_INTEREST = (id) => {
             }
         }
 
-        let updatedInterest = interest
-        updatedInterest.isActive = false
-        return interest.update(
-            updatedInterest
-        ).then(status => {
+        return interest.updateAttributes({
+            isActive: false
+        })
+        .then(status => {
             return status
         })
     })
@@ -217,11 +215,10 @@ adminModel.DELETE_SCHOOL = (id) => {
             }
         }
 
-        let updatedSchool = school
-        updatedSchool.isActive = false
-        return school.update(
-            updatedSchool
-        ).then(status => {
+        return school.updateAttributes({
+            isActive: false
+        })
+        .then(status => {
             return status
         })
     })
