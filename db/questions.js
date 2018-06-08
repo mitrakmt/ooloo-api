@@ -11,7 +11,7 @@ module.exports = (db) => {
             required: true
         },
         correctAnswer: {
-            type: Sequelize.STRING,
+            type: Sequelize.ARRAY,
             required: true
         },
         difficulty: {
