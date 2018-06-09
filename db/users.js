@@ -31,6 +31,17 @@ module.exports = (db) => {
             type: Sequelize.BOOLEAN,
             defaultValue: false
         },
+        rank: {
+            type: Sequelize.STRING,
+            defaultValue: 0
+        },
+        points: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+        },
+        gender: {
+            type: Sequelize.STRING
+        },
         image: {
             type: Sequelize.STRING,
         }
