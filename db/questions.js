@@ -3,7 +3,7 @@ let Sequelize = require('sequelize')
 module.exports = (db) => {    
     const Questions = db.define('questions', {
         question: {
-            type: Sequelize.STRING,
+            type: Sequelize.STRING(1000),
             required: true
         },
         answers: {
