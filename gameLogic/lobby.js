@@ -3,6 +3,7 @@ const { GET_INTERESTS } = require('../models/interest');
 const {findOpponent} = require('./util');
 const mockQuestions = require('./mockQuestions');
 const {setupGame} = require('./gameManager'); 
+const {GET_QUESTIONS} = require('../models/question');
 
 const playerQueue = []; 
 
@@ -12,10 +13,12 @@ const addPlayerToQueue = (playerObj)=>{
 const removePlayerFromQueue = (index)=>{
 	playerQueue.splice(index, 1); 
 };
-const getQuestions = (interests)=>{
-	return mockQuestions;
+const getQuestions = async(interests)=>{
+	const questions = await GET_QUESTIONS(interests); 
+	console.log(questions); 
+	return questions; 
 };
-const queueOrMatch = (playerObj, {_playerQueue = playerQueue, _getQuestions = getQuestions, _removePlayerFromQueue = removePlayerFromQueue, _addPlayerToQueue = addPlayerToQueue} = {})=>{
+const queueOrMatch = async(playerObj, {_playerQueue = playerQueue, _getQuestions = getQuestions, _removePlayerFromQueue = removePlayerFromQueue, _addPlayerToQueue = addPlayerToQueue} = {})=>{
 	const playerInterests = playerObj.interests;
 	const opponentInterests = _playerQueue.map(({interests})=> interests);
 
@@ -29,15 +32,16 @@ const queueOrMatch = (playerObj, {_playerQueue = playerQueue, _getQuestions = ge
 			players: [opponent, playerObj]
 		};
 		_removePlayerFromQueue(match.index); 
-		gameObject.questions = _getQuestions(gameObject.interests);
+		gameObject.questions = await _getQuestions(gameObject.interests);
 		setupGame(gameObject); 
 	}
 };
-const botGame = (playerObj)=>{
+const botGame = async(playerObj)=>{
+	const questions = await getQuestions(playerObj.interests); 
 	const gameObject = {
 			interests: ['foo', 'bar'],
 			players: [playerObj],
-			questions: mockQuestions
+			questions
 		};
 	setupGame(gameObject); 
 };
@@ -63,4 +67,4 @@ module.exports = {
 	addPlayerToQueue,
 	playerConnects,
 	queueOrMatch
-}
+};
