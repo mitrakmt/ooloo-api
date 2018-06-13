@@ -25,7 +25,7 @@ Users.belongsToMany(Interests, {
   foreignKey: "userId"
 });
 
-// // HELPER TO DROP ALL TABLES
+// HELPER FUNCTION TO DROP ALL TABLES, LEAVE THIS FOR NOW
 // db.sync({ force: true }).then(() => {
 //   console.log("Tables have been dropped");
 // });

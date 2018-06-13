@@ -207,8 +207,8 @@ adminModel.GET_LOADING_FACTS = () => {
   });
 };
 
-adminModel.ADD_LOADING_FACT = fact => {
-  return LoadingFact.create(fact).then(fact => {
+adminModel.ADD_LOADING_FACT = providedFact => {
+  return LoadingFact.create({ fact: providedFact }).then(fact => {
     if (!fact) {
       sendError("AdminAddLoadingFact", "Failed to add fact", fact, "Admin");
       return {
