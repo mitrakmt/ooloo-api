@@ -5,7 +5,8 @@ module.exports = db => {
     "loadingFacts",
     {
       fact: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        required: true
       }
     },
     {
