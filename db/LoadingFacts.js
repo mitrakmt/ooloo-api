@@ -1,18 +1,18 @@
-let Sequelize = require("sequelize");
+let Sequelize = require('sequelize')
 
 module.exports = db => {
   const LoadingFacts = db.define(
-    "loadingFacts",
+    'loadingFacts',
     {
       fact: {
         type: Sequelize.STRING,
-        required: true
-      }
+        required: true,
+      },
     },
     {
-      freezeTableName: true
-    }
-  );
+      freezeTableName: true,
+    },
+  )
 
-  return LoadingFacts;
-};
+  return LoadingFacts
+}

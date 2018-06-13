@@ -1,21 +1,21 @@
-let Sequelize = require("sequelize");
+let Sequelize = require('sequelize')
 
 module.exports = db => {
   const Interests = db.define(
-    "interests",
+    'interests',
     {
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       isActive: {
         type: Sequelize.BOOLEAN,
-        defaultValue: true
-      }
+        defaultValue: true,
+      },
     },
     {
-      freezeTableName: true
-    }
-  );
+      freezeTableName: true,
+    },
+  )
 
-  return Interests;
-};
+  return Interests
+}

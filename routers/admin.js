@@ -1,14 +1,14 @@
-let adminRouter = require("express").Router();
-let adminController = require("../controllers/admin");
-const checkAdmin = require("../middleware/admin");
+let adminRouter = require('express').Router()
+let adminController = require('../controllers/admin')
+const checkAdmin = require('../middleware/admin')
 
 adminRouter
-  .route("/user")
+  .route('/user')
   .get(checkAdmin, adminController.GET_ADMINS)
-  .post(checkAdmin, adminController.CREATE_ADMIN);
+  .post(checkAdmin, adminController.CREATE_ADMIN)
 
 adminRouter
-  .route("/question")
+  .route('/question')
   /**
    * @api {get} /question Get all active questions
    * @apiName GetActiveQuestions
@@ -97,10 +97,10 @@ adminRouter
    *       "message": "Error response"
    *     }
    */
-  .delete(checkAdmin, adminController.DELETE_QUESTION);
+  .delete(checkAdmin, adminController.DELETE_QUESTION)
 
 adminRouter
-  .route("/question/all")
+  .route('/question/all')
   /**
    * @api {get} /question/all Get all active and inactive questions
    * @apiName GetAllQuestions
@@ -126,24 +126,24 @@ adminRouter
    *       "message": "Error response"
    *     }
    */
-  .get(checkAdmin, adminController.GET_ALL_QUESTIONS);
+  .get(checkAdmin, adminController.GET_ALL_QUESTIONS)
 
 adminRouter
-  .route("/interest")
+  .route('/interest')
   .get(checkAdmin, adminController.GET_MASTER_INTERESTS)
   .post(checkAdmin, adminController.ADD_MASTER_INTEREST)
-  .delete(checkAdmin, adminController.DELETE_MASTER_INTEREST);
+  .delete(checkAdmin, adminController.DELETE_MASTER_INTEREST)
 
 adminRouter
-  .route("/loadingFact")
+  .route('/loadingFact')
   .get(checkAdmin, adminController.GET_LOADING_FACTS)
   .post(checkAdmin, adminController.ADD_LOADING_FACT)
-  .delete(checkAdmin, adminController.DELETE_LOADING_FACT);
+  .delete(checkAdmin, adminController.DELETE_LOADING_FACT)
 
 adminRouter
-  .route("/school")
+  .route('/school')
   .get(checkAdmin, adminController.GET_SCHOOLS)
   .post(checkAdmin, adminController.ADD_SCHOOL)
-  .delete(checkAdmin, adminController.DELETE_SCHOOL);
+  .delete(checkAdmin, adminController.DELETE_SCHOOL)
 
-module.exports = adminRouter;
+module.exports = adminRouter

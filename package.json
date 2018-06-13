@@ -4,7 +4,10 @@
   "main": "server.js",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "format": "prettier --write '**/*.{js}'",
+    "lint": "eslint '**/*.{js}' --quiet",
+    "precommit": "format"
   },
   "dependencies": {
     "apidoc": "^0.17.6",
