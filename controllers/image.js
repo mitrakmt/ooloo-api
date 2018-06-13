@@ -1,7 +1,6 @@
-let interestController = {};
-const path = require("path");
-const fs = require("fs");
-const aws = require("aws-sdk");
+let imageController = {};
+let aws = require("aws-sdk");
+let sendError = require("../helpers/sendError");
 
 var wasabiEndpoint = new aws.Endpoint("s3.wasabisys.com");
 var s3 = new aws.S3({
@@ -10,9 +9,8 @@ var s3 = new aws.S3({
   secretAccessKey: process.env.WASABI_SECRET_KEY
 });
 
-interestController.UPLOAD_PROFILE_IMAGE = (req, res) => {
+imageController.UPLOAD_PROFILE_IMAGE = (req, res) => {
   let userId = req.params.userId;
-  let filePath = req.files.imageFiles.name;
   var params = {
     Bucket: "ooloo-profile-images",
     Key: userId,
@@ -26,13 +24,12 @@ interestController.UPLOAD_PROFILE_IMAGE = (req, res) => {
 
   s3.upload(params, options, function(err, data) {
     if (!err) {
-      console.log("data", data);
       res.status(200).send({
         data,
         status: "Success"
       });
     } else {
-      console.log(err); // an error occurred
+      sendError("ImageUpload", err, req, "Image");
       res.status(401).send({
         error: "Error"
       });
@@ -40,7 +37,7 @@ interestController.UPLOAD_PROFILE_IMAGE = (req, res) => {
   });
 };
 
-interestController.GET_PROFILE_IMAGE = (req, res) => {
+imageController.GET_PROFILE_IMAGE = (req, res) => {
   let userId = req.params.userId;
   var params = {
     Bucket: "ooloo-profile-images",
@@ -49,25 +46,11 @@ interestController.GET_PROFILE_IMAGE = (req, res) => {
 
   s3.getObject(params, function(error, data) {
     if (!err) {
-      console.log(data); // successful response
       res.status(200).send({
         data
       });
-      /*
-        data = {
-         AcceptRanges: "bytes", 
-         ContentLength: 3191, 
-         ContentType: "image/jpeg", 
-         ETag: "\"6805f2cfc46c0f04559748bb039d69ae\"", 
-         LastModified: <Date Representation>, 
-         Metadata: {
-         }, 
-         TagCount: 2, 
-         VersionId: "null"
-        }
-        */
     } else {
-      console.log(err); // an error occurred
+      sendError("GetProfileImage", err, req, "Image");
       res.status(400).send({
         error
       });
@@ -75,4 +58,4 @@ interestController.GET_PROFILE_IMAGE = (req, res) => {
   });
 };
 
-module.exports = interestController;
+module.exports = imageController;

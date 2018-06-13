@@ -2,7 +2,7 @@ let Sequelize = require("sequelize");
 
 module.exports = db => {
   const LoadingFacts = db.define(
-    "interests",
+    "loadingFacts",
     {
       fact: {
         type: Sequelize.STRING
