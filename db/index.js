@@ -1,14 +1,15 @@
-const db = require("./db.config");
-const Sequelize = require("sequelize");
+const db = require('./db.config')
+const Sequelize = require('sequelize')
 
 // SET TABLE SCHEMA
-const Users = require("./users")(db);
-const Interests = require("./interests")(db);
-const Questions = require("./questions")(db);
-const Schools = require("./schools")(db);
+const Users = require('./users')(db)
+const Interests = require('./interests')(db)
+const Questions = require('./questions')(db)
+const Schools = require('./schools')(db)
+const LoadingFacts = require('./loadingFacts')(db)
 
 // CREATE JOIN TABLES
-const UsersInterests = db.define("UsersInterests", {});
+const UsersInterests = db.define('UsersInterests', {})
 
 /**
  * Interests:Users
@@ -17,21 +18,21 @@ const UsersInterests = db.define("UsersInterests", {});
 // Interests:Users (n:m)
 Interests.belongsToMany(Users, {
   through: UsersInterests,
-  foreignKey: "interestId"
-});
+  foreignKey: 'interestId',
+})
 Users.belongsToMany(Interests, {
   through: UsersInterests,
-  foreignKey: "userId"
-});
+  foreignKey: 'userId',
+})
 
-// // HELPER TO DROP ALL TABLES
+// HELPER FUNCTION TO DROP ALL TABLES, LEAVE THIS FOR NOW
 // db.sync({ force: true }).then(() => {
 //   console.log("Tables have been dropped");
 // });
 
 db.sync().then(function() {
-  console.log("Tables have been Created");
-});
+  console.log('Tables have been Created')
+})
 
 module.exports = {
   db,
@@ -39,5 +40,6 @@ module.exports = {
   Interests,
   UsersInterests,
   Questions,
-  Schools
-};
+  Schools,
+  LoadingFacts,
+}

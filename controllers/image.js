@@ -1,78 +1,61 @@
-let interestController = {};
-const path = require("path");
-const fs = require("fs");
-const aws = require("aws-sdk");
+let imageController = {}
+let aws = require('aws-sdk')
+let sendError = require('../helpers/sendError')
 
-var wasabiEndpoint = new aws.Endpoint("s3.wasabisys.com");
+var wasabiEndpoint = new aws.Endpoint('s3.wasabisys.com')
 var s3 = new aws.S3({
   endpoint: wasabiEndpoint,
   accessKeyId: process.env.WASABI_ACCESS_KEY,
-  secretAccessKey: process.env.WASABI_SECRET_KEY
-});
+  secretAccessKey: process.env.WASABI_SECRET_KEY,
+})
 
-interestController.UPLOAD_PROFILE_IMAGE = (req, res) => {
-  let userId = req.params.userId;
-  let filePath = req.files.imageFiles.name;
+imageController.UPLOAD_PROFILE_IMAGE = (req, res) => {
+  let userId = req.params.userId
   var params = {
-    Bucket: "ooloo-profile-images",
+    Bucket: 'ooloo-profile-images',
     Key: userId,
-    Body: req.files.imageFiles.data
-  };
+    Body: req.files.imageFiles.data,
+  }
 
   var options = {
     partSize: 10 * 1024 * 1024, // 10 MB
-    queueSize: 10
-  };
+    queueSize: 10,
+  }
 
   s3.upload(params, options, function(err, data) {
     if (!err) {
-      console.log("data", data);
       res.status(200).send({
         data,
-        status: "Success"
-      });
+        status: 'Success',
+      })
     } else {
-      console.log(err); // an error occurred
+      sendError('ImageUpload', err, req, 'Image')
       res.status(401).send({
-        error: "Error"
-      });
+        error: 'Error',
+      })
     }
-  });
-};
+  })
+}
 
-interestController.GET_PROFILE_IMAGE = (req, res) => {
-  let userId = req.params.userId;
+imageController.GET_PROFILE_IMAGE = (req, res) => {
+  let userId = req.params.userId
   var params = {
-    Bucket: "ooloo-profile-images",
-    Key: userId
-  };
+    Bucket: 'ooloo-profile-images',
+    Key: userId,
+  }
 
   s3.getObject(params, function(error, data) {
     if (!err) {
-      console.log(data); // successful response
       res.status(200).send({
-        data
-      });
-      /*
-        data = {
-         AcceptRanges: "bytes", 
-         ContentLength: 3191, 
-         ContentType: "image/jpeg", 
-         ETag: "\"6805f2cfc46c0f04559748bb039d69ae\"", 
-         LastModified: <Date Representation>, 
-         Metadata: {
-         }, 
-         TagCount: 2, 
-         VersionId: "null"
-        }
-        */
+        data,
+      })
     } else {
-      console.log(err); // an error occurred
+      sendError('GetProfileImage', err, req, 'Image')
       res.status(400).send({
-        error
-      });
+        error,
+      })
     }
-  });
-};
+  })
+}
 
-module.exports = interestController;
+module.exports = imageController

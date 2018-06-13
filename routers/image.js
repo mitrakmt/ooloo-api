@@ -1,8 +1,8 @@
-let imageRouter = require("express").Router();
-let imageController = require("../controllers/image");
+let imageRouter = require('express').Router()
+let imageController = require('../controllers/image')
 
 imageRouter
-  .route("/profile/:userId")
+  .route('/profile/:userId')
   /**
    * @api {post} /email/contact Contact Ooloo
    * @apiName ContactUs
@@ -31,6 +31,6 @@ imageRouter
    *     }
    */
   .post(imageController.UPLOAD_PROFILE_IMAGE)
-  .get(imageController.GET_PROFILE_IMAGE);
+  .get(imageController.GET_PROFILE_IMAGE)
 
-module.exports = imageRouter;
+module.exports = imageRouter
