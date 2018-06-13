@@ -4,6 +4,7 @@ let User = require("../db").Users;
 let authHelpers = require("../helpers/auth");
 let Interest = require("../db").Interests;
 let School = require("../db").Schools;
+let LoadingFact = require("../db").LoadingFacts;
 let _ = require("lodash");
 let sendError = require("../helpers/sendError");
 
@@ -196,6 +197,40 @@ adminModel.CREATE_ADMIN = (email, password, username) => {
         });
       });
     });
+  });
+};
+
+// LOADING FACTS
+adminModel.GET_LOADING_FACTS = () => {
+  return LoadingFact.findAll({}).then(facts => {
+    return facts;
+  });
+};
+
+adminModel.ADD_LOADING_FACT = fact => {
+  return LoadingFact.create(fact).then(fact => {
+    if (!fact) {
+      sendError("AdminAddLoadingFact", "Failed to add fact", fact, "Admin");
+      return {
+        error: true
+      };
+    }
+    return {
+      fact,
+      error: false
+    };
+  });
+};
+
+adminModel.DELETE_LOADING_FACT = id => {
+  return LoadingFact.destroy({
+    where: {
+      id
+    }
+  }).then(user => {
+    return {
+      deleted: true
+    };
   });
 };
 

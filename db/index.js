@@ -6,6 +6,7 @@ const Users = require("./users")(db);
 const Interests = require("./interests")(db);
 const Questions = require("./questions")(db);
 const Schools = require("./schools")(db);
+const LoadingFacts = require("./loadingFacts")(db);
 
 // CREATE JOIN TABLES
 const UsersInterests = db.define("UsersInterests", {});
@@ -39,5 +40,6 @@ module.exports = {
   Interests,
   UsersInterests,
   Questions,
-  Schools
+  Schools,
+  LoadingFacts
 };

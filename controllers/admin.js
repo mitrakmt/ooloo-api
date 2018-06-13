@@ -131,6 +131,29 @@ adminController.CREATE_ADMIN = (req, res) => {
   });
 };
 
+// LOADING QUESTIONS
+adminController.GET_LOADING_FACTS = (req, res) => {
+  adminModel.GET_LOADING_FACTS().then(response => {
+    res.status(200).send(response);
+  });
+};
+
+adminController.ADD_LOADING_FACT = (req, res) => {
+  let fact = req.body.fact;
+
+  adminModel.ADD_LOADING_FACT(fact).then(response => {
+    res.status(200).send(response);
+  });
+};
+
+adminController.DELETE_LOADING_FACT = (req, res) => {
+  let factId = req.body.factId;
+
+  adminModel.DELETE_LOADING_FACT(factId).then(response => {
+    res.status(200).send(response);
+  });
+};
+
 // SCHOOLS
 adminController.GET_SCHOOLS = (req, res) => {
   adminModel.GET_SCHOOLS().then(response => {

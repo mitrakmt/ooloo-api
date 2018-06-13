@@ -135,6 +135,12 @@ adminRouter
   .delete(checkAdmin, adminController.DELETE_MASTER_INTEREST);
 
 adminRouter
+  .route("/loadingFact")
+  .get(checkAdmin, adminController.GET_LOADING_FACTS)
+  .post(checkAdmin, adminController.ADD_LOADING_FACT)
+  .delete(checkAdmin, adminController.DELETE_LOADING_FACT);
+
+adminRouter
   .route("/school")
   .get(checkAdmin, adminController.GET_SCHOOLS)
   .post(checkAdmin, adminController.ADD_SCHOOL)
