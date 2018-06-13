@@ -1,7 +1,7 @@
 let emailController = {}
 let Mailchimp = require('mailchimp-api-v3')
-let mailchimp = new Mailchimp(process.env.MAILCHIMP_API);
-let mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN });
+let mailchimp = new Mailchimp(process.env.MAILCHIMP_API)
+let mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN })
 let emailModel = require('../models/email')
 let generatePasswordResetToken = require('../helpers/auth').generatePasswordResetToken
 let sendError = require('../helpers/sendError')
@@ -15,8 +15,8 @@ emailController.CONTACT_US = (req, res) => {
   let emailData = {
     from: email,
     to: 'contact@ooloo.app',
-    subject: "[CONTACT] - Topic: " + topic,
-    text: "Name: " + name + ", Topic: " + topic + "\n \n" + message
+    subject: '[CONTACT] - Topic: ' + topic,
+    text: 'Name: ' + name + ', Topic: ' + topic + '\n \n' + message,
   }
 
   mailgun.messages().send(emailData, (err, body) => {
@@ -24,15 +24,14 @@ emailController.CONTACT_US = (req, res) => {
       sendError('EmailContactUs', err, req, 'Email')
       res.status(400).send({
         sent: false,
-        error: err
+        error: err,
       })
-    }
-    else {
+    } else {
       res.status(200).send({
-        sent: true
+        sent: true,
       })
     }
-  });
+  })
 }
 
 emailController.SIGN_UP = (req, res) => {
@@ -41,15 +40,16 @@ emailController.SIGN_UP = (req, res) => {
   let lastName = req.body.lastName
   // TODO: names not being saved correctly
 
-  mailchimp.post('/lists/627367da02/members', {
-    email_address: email,
-    firstName,
-    lastName,
-    status: 'subscribed'
-  })
+  mailchimp
+    .post('/lists/627367da02/members', {
+      email_address: email,
+      firstName,
+      lastName,
+      status: 'subscribed',
+    })
     .then(results => {
       res.status(200).send({
-        subscribed: true
+        subscribed: true,
       })
     })
 }
@@ -63,7 +63,7 @@ emailController.PASSWORD_RESET = (req, res) => {
     subject: 'Ooloo - Password Reset',
     text: `Please use the following link to reset your password: https://www.ooloo.app/passwordreset/${token}
     
-    This link will expire in 60 minutes.`
+    This link will expire in 60 minutes.`,
   }
 
   mailgun.messages().send(emailData, (err, body) => {
@@ -71,15 +71,14 @@ emailController.PASSWORD_RESET = (req, res) => {
       sendError('EmailPasswordReset', err, req, 'Email')
       res.status(400).send({
         sent: false,
-        error: err
+        error: err,
       })
-    }
-    else {
+    } else {
       res.status(200).send({
-        sent: true
+        sent: true,
       })
     }
-  });
+  })
 }
 
 module.exports = emailController
