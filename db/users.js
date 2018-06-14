@@ -47,6 +47,13 @@ module.exports = db => {
       image: {
         type: Sequelize.STRING,
       },
+      subscribed: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      customerId: {
+        type: Sequelize.STRING,
+      },
     },
     {
       freezeTableName: true,
