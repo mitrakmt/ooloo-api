@@ -6,7 +6,6 @@ const Users = require('./users')(db)
 const Interests = require('./interests')(db)
 const Questions = require('./questions')(db)
 const Schools = require('./schools')(db)
-<<<<<<< HEAD
 const Answers = require('./answers')(db)
 const Games = require('./games')(db)
 const LoadingFacts = require('./loadingFacts')(db)
