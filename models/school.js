@@ -1,5 +1,5 @@
-let schoolModel = {}
-let School = require('../db').Schools
+const schoolModel = {}
+const School = require('../db').Schools
 schoolModel.GET_SCHOOLS = () => {
   return School.findAll({
     where: {

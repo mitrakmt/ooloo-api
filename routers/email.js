@@ -1,5 +1,5 @@
-let emailRouter = require('express').Router()
-let emailController = require('../controllers/email')
+const emailRouter = require('express').Router()
+const emailController = require('../controllers/email')
 
 emailRouter
   .route('/contact')

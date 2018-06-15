@@ -1,5 +1,5 @@
-let interestRouter = require('express').Router()
-let interestController = require('../controllers/interest')
+const interestRouter = require('express').Router()
+const interestController = require('../controllers/interest')
 const checkJwt = require('../middleware/auth')
 
 interestRouter

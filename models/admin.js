@@ -1,12 +1,12 @@
-let adminModel = {}
-let Question = require('../db').Questions
-let User = require('../db').Users
-let authHelpers = require('../helpers/auth')
-let Interest = require('../db').Interests
-let School = require('../db').Schools
-let LoadingFact = require('../db').LoadingFacts
-let _ = require('lodash')
-let sendError = require('../helpers/sendError')
+const adminModel = {}
+const Question = require('../db').Questions
+const User = require('../db').Users
+const authHelpers = require('../helpers/auth')
+const Interest = require('../db').Interests
+const School = require('../db').Schools
+const LoadingFact = require('../db').LoadingFacts
+const _ = require('lodash')
+const sendError = require('../helpers/sendError')
 
 // QUESTIONS
 adminModel.ADD_QUESTION = question => {

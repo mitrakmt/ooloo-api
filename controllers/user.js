@@ -1,10 +1,10 @@
-let userController = {}
-let userModel = require('../models/user')
-let authHelpers = require('../helpers/auth')
-let Promise = require('bluebird')
-let mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN })
-let sendError = require('../helpers/sendError')
-let verifyToken = require('../helpers/auth').verifyToken
+const userController = {}
+const userModel = require('../models/user')
+const authHelpers = require('../helpers/auth')
+const Promise = require('bluebird')
+const mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN })
+const sendError = require('../helpers/sendError')
+const verifyToken = require('../helpers/auth').verifyToken
 
 userController.SIGN_UP = (req, res) => {
   let email = req.body.email

@@ -1,9 +1,9 @@
-let imageController = {}
-let aws = require('aws-sdk')
-let sendError = require('../helpers/sendError')
+const imageController = {}
+const aws = require('aws-sdk')
+const sendError = require('../helpers/sendError')
 
-var wasabiEndpoint = new aws.Endpoint('s3.wasabisys.com')
-var s3 = new aws.S3({
+const wasabiEndpoint = new aws.Endpoint('s3.wasabisys.com')
+const s3 = new aws.S3({
   endpoint: wasabiEndpoint,
   accessKeyId: process.env.WASABI_ACCESS_KEY,
   secretAccessKey: process.env.WASABI_SECRET_KEY,
@@ -11,13 +11,13 @@ var s3 = new aws.S3({
 
 imageController.UPLOAD_PROFILE_IMAGE = (req, res) => {
   let userId = req.params.userId
-  var params = {
+  let params = {
     Bucket: 'ooloo-profile-images',
     Key: userId,
     Body: req.files.imageFiles.data,
   }
 
-  var options = {
+  let options = {
     partSize: 10 * 1024 * 1024, // 10 MB
     queueSize: 10,
   }
@@ -39,7 +39,7 @@ imageController.UPLOAD_PROFILE_IMAGE = (req, res) => {
 
 imageController.GET_PROFILE_IMAGE = (req, res) => {
   let userId = req.params.userId
-  var params = {
+  let params = {
     Bucket: 'ooloo-profile-images',
     Key: userId,
   }

@@ -1,8 +1,8 @@
-let userModel = {}
-let User = require('../db').Users
-let authHelpers = require('../helpers/auth')
-let _ = require('lodash')
-let sendError = require('../helpers/sendError')
+const userModel = {}
+const User = require('../db').Users
+const authHelpers = require('../helpers/auth')
+const _ = require('lodash')
+const sendError = require('../helpers/sendError')
 
 userModel.SIGN_UP = (email, password, username) => {
   return User.findOne({

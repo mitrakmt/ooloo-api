@@ -1,5 +1,5 @@
-let schoolRouter = require('express').Router()
-let schoolController = require('../controllers/school')
+const schoolRouter = require('express').Router()
+const schoolController = require('../controllers/school')
 const checkJwt = require('../middleware/auth')
 
 schoolRouter
