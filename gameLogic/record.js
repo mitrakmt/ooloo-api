@@ -1,4 +1,4 @@
-const {Games, Answers, UsersGames} = require('../db'); 
+const {Games, Answers, UsersGames, Users} = require('../db'); 
 
 const recordGameStart = async(gameObject)=>{
 	const game = await Games.create({topics: gameObject.interests});
@@ -20,11 +20,16 @@ const appendWinner = (id, playersArray, scoreArray, {_Games = Games} = {})=>{
 	const winnerID = playersArray[winnerIndex];
 	_Games.update({winner: winnerID}, {where:{id}});
 };
-const recordPlayersWithScore = (gameId, playersArray, scoreArray, {_UsersGames = UsersGames} = {})=>{
-	playersArray.forEach((userId, index)=>{
+const recordPlayersWithScore = async(gameId, playersArray, scoreArray, {_UsersGames = UsersGames} = {})=>{
+	const promises = playersArray.map((userId, index)=>{
 		const score = scoreArray[index]; 
-		_UsersGames.create({userId, score, gameId});
+		return _UsersGames.create({userId, score, gameId});
 	});
+	await Promise.all(promises); 
+	playersArray.forEach(async(userId)=>{
+		const points = await UsersGames.sum('score', {where:{userId}});
+		Users.update({points}, {where:{id:userId}})
+	})
 };
 
 const recordAnswers = (gameId, playersArray, answersTuple, questionsArray, startTime, {_Answers = Answers} = {})=>{
@@ -43,6 +48,10 @@ const recordAnswers = (gameId, playersArray, answersTuple, questionsArray, start
 		});
 	});
 };
+
+const updatePlayerScore = (playerId)=>{
+
+}
 
 module.exports = {
 	recordGameFinish,
