@@ -1,18 +1,19 @@
 const {pickInterest} = require('./util'); 
+const {recordGameStart, recordGameFinish} = require('./record'); 
 const config = {
 	duration: 1000 * 60 * 5,
 	questions: 10, 
 	pointsPerQuestion: 1000
 };
 
-const setupGame = (gameObject, _config = config)=>{
+const setupGame = async(gameObject, _config = config)=>{
 	const {players} = gameObject;
 	gameObject.startTime = Date.now();
 	gameObject.duration = _config.duration; 
 	gameObject.finishedTime = new Array(2); 
 	gameObject.pointsPerQuestion = _config.pointsPerQuestion; 
 	gameObject.answers = createAnswerArray(gameObject.questions.length);
-	gameObject.gameID = getGameID(); 
+	gameObject.gameID = await recordGameStart(gameObject); 
 	players.forEach(({socket}, index)=>{
 		//What other info should this have?
 		socket.emit('gameStart', 
@@ -38,10 +39,6 @@ const setupGame = (gameObject, _config = config)=>{
 	//record answers in results obj
 	//send next question
 
-//TODO get actual game ID when saving games. 
-const getGameID = ()=>{
-	return 1; 
-};
 const createAnswerArray = (questions)=>{
 	const array = [];
 	for(let i = 0; i < questions; i++){
@@ -51,19 +48,22 @@ const createAnswerArray = (questions)=>{
 };
 //TODO Currently tears down when one player finishes.
 const gameFinished = (gameObject)=>{
-	sendFinalResults(gameObject); 
-	tearDown(gameObject); 
-};
-const sendFinalResults = (gameObject)=>{
 	const gameState = getCurrentGameState(gameObject); 
 	gameState.score = gameState.score.map((points)=>{
 		return Math.round(points * (1 - ((gameObject.duration - gameState.remainingTime) / 1000 / 600)));
 	});
+	gameObject.state = gameState; 
+	recordGameFinish(gameObject); 
+	sendFinalResults(gameObject, gameState); 
+	tearDown(gameObject);
+};
+const sendFinalResults = (gameObject, gameState)=>{
 	const results = {
 		...gameState,
 		answers: gameObject.answers,
 		gameID: gameObject.gameID
 	};
+	gameObject.scoreState = gameState; 
 	gameObject.players.forEach(({socket})=>{
 		socket.emit('gameResults', {...results});
 	});
@@ -113,7 +113,7 @@ const checkAnswer = (questionNumber, answer, playerIndex, gameObject)=>{
 	const correct = (correctAnswer === answer);
 	const answerObj = gameObject.answers[questionNumber];
 	
-	answerObj[playerIndex] = {correct, answer};
+	answerObj[playerIndex] = {correct, answer, answerTime: Date.now()};
 	return {correct, playerIndex, questionNumber};
 };
 //TODO: Currently ends when one player finishes. Fine for now, modifiy for multiple players

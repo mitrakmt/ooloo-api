@@ -4,10 +4,10 @@ const questionsModel = {};
 questionsModel.GET_QUESTIONS = async(interests)=>{
     const questions = await Questions.findAll({
         limit:10,
-        attributes:['question','answers','correctAnswer'],
+        attributes:['id','question','answers','correctAnswer'],
         order: [ [ db.fn('RANDOM') ] ]
     });
-    return questions.map(({question, answers: possibleAnswers, correctAnswer: answer})=> ({answer, possibleAnswers, question})); 
+    return questions.map(({id: questionId, question, answers: possibleAnswers, correctAnswer: answer})=> ({answer, possibleAnswers, question, questionId})); 
 };
 
 module.exports = questionsModel;

@@ -15,7 +15,6 @@ const removePlayerFromQueue = (index)=>{
 };
 const getQuestions = async(interests)=>{
 	const questions = await GET_QUESTIONS(interests); 
-	console.log(questions); 
 	return questions; 
 };
 const queueOrMatch = async(playerObj, {_playerQueue = playerQueue, _getQuestions = getQuestions, _removePlayerFromQueue = removePlayerFromQueue, _addPlayerToQueue = addPlayerToQueue} = {})=>{

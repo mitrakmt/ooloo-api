@@ -1,0 +1,8 @@
+DATABASE_URI=postgres://qpraebai:uzt7K5aCgEZ3RGI-4V8Oh4Q6wg1m2clc@stampy.db.elephantsql.com:5432/qpraebai
+JWT_SECRET=ooloosecretapi
+MAILCHIMP_API=027ef68bcfa77c628d9f0900a10914f1-us18
+MAILGUN_API=4118ef50a5cd481bc749d2c40ff28e1d-115fe3a6-7c8e0740
+MAILGUN_DOMAIN=email.ooloo.app
+STRIPE_LIVE_KEY=
+DOMAIN=ooloo.app
+RAYGUN_KEY=HXaXVegNp/Mu9mTu+AvidA==
