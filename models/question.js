@@ -1,5 +1,5 @@
-let {Questions, db} = require('../db');
-const questionsModel = {}; 
+let { Questions, db } = require('../db')
+const questionsModel = {}
 
 questionsModel.GET_QUESTIONS = async(interests)=>{
     const questions = await Questions.findAll({
@@ -10,4 +10,5 @@ questionsModel.GET_QUESTIONS = async(interests)=>{
     return questions.map(({id: questionId, question, answers: possibleAnswers, correctAnswer: answer})=> ({answer, possibleAnswers, question, questionId})); 
 };
 
-module.exports = questionsModel;
+
+module.exports = questionsModel

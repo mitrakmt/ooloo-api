@@ -2,13 +2,14 @@ let schoolRouter = require('express').Router()
 let schoolController = require('../controllers/school')
 const checkJwt = require('../middleware/auth')
 
-schoolRouter.route('/')
-   /**
+schoolRouter
+  .route('/')
+  /**
    * @api {get} /school Get schools
    * @apiName GetSchools
    * @apiGroup Schools
    * @apiPermission authenticated user
-   * 
+   *
    * @apiHeader (Authorization) {String} authorization Authorization token.
    *
    * @apiSuccess {Array} schools List of all schools

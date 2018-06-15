@@ -6,8 +6,10 @@ const Users = require('./users')(db)
 const Interests = require('./interests')(db)
 const Questions = require('./questions')(db)
 const Schools = require('./schools')(db)
+<<<<<<< HEAD
 const Answers = require('./answers')(db)
 const Games = require('./games')(db)
+const LoadingFacts = require('./loadingFacts')(db)
 
 // CREATE JOIN TABLES
 const UsersInterests = db.define('UsersInterests', {})
@@ -17,13 +19,20 @@ const UsersGames = db.define('UsersGames', {
 	gameId: Sequelize.INTEGER
 })
 
-/* *
-* Interests:Users
-* */
+/**
+ * Interests:Users
+ * */
 
 // Interests:Users (n:m)
-Interests.belongsToMany(Users, {through: UsersInterests, foreignKey: 'interestId'})
-Users.belongsToMany(Interests, {through: UsersInterests, foreignKey: 'userId'})
+Interests.belongsToMany(Users, {
+  through: UsersInterests,
+  foreignKey: 'interestId',
+})
+Users.belongsToMany(Interests, {
+  through: UsersInterests,
+  foreignKey: 'userId',
+})
+
 
 Users.belongsToMany(Games, {through: 'UsersGames', foreignKey: 'userId'})
 Games.belongsToMany(Users, {through: 'UsersGames', foreignKey: 'gameId'})
@@ -31,12 +40,14 @@ Games.belongsToMany(Users, {through: 'UsersGames', foreignKey: 'gameId'})
 Answers.belongsTo(Users, {foreignKey: 'userId'})
 Answers.belongsTo(Games, {foreignKey: 'gameId'})
 
-// // HELPER TO DROP ALL TABLES
-// db.sync({force: true}).then(() => {
-//   console.log('Tables have been dropped')
-// })
 
-db.sync().then(function () {
+// HELPER FUNCTION TO DROP ALL TABLES, LEAVE THIS FOR NOW
+// db.sync({ force: true }).then(() => {
+//   console.log("Tables have been dropped");
+// });
+
+
+db.sync().then(function() {
   console.log('Tables have been Created')
 })
 
@@ -49,5 +60,6 @@ module.exports = {
   Schools,
   Answers,
   Games,
-  UsersGames
+  UsersGames,
+  LoadingFacts,
 }
