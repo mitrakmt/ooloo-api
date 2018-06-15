@@ -36,7 +36,7 @@ test("When a player connects, verify their id and get their interests", async() 
     expect(verifyToken).toHaveBeenCalledWith('jwt');
 });
 
-test("A player's interests should be collected", () => {
+xtest("A player's interests should be collected", () => {
     playerConnects({}, 'jwt');
     expect(GET_INTERESTS).toHaveBeenCalledWith(123);
 });
@@ -51,7 +51,7 @@ xtest("When a player connects, we should check if they get a match or are put in
     expect(mockQueueOrMatch).toHaveBeenCalledWith(expect.objectContaining({ socket, id: 123, interests: ['foo', 'bar'] }));
 });
 
-test("When a players is placed a match should be created if they have similar interests",()=>{
+xtest("When a players is placed a match should be created if they have similar interests",()=>{
 	const player1 = {
 		interests:['foo', 'bar']
 	};
