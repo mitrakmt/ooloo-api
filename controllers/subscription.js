@@ -4,8 +4,6 @@ let userModel = require('../models/user')
 let stripe = require('stripe')(process.env.STRIPE_KEY)
 
 // PLANS
-subscriptionController.GET_SUBSCRIPTION_PLANS = (req, res) => {}
-
 subscriptionController.CREATE_NEW_PLAN = (req, res) => {
   return stripe.plans
     .create({
@@ -16,7 +14,6 @@ subscriptionController.CREATE_NEW_PLAN = (req, res) => {
       amount: 10000, // $10
     })
     .then(plan => {
-      console.log('plan', plan)
       res.status(200).send({
         plan,
       })
@@ -63,7 +60,6 @@ subscriptionController.CREATE_USER_SUBSCRIPTION = (req, res) => {
       items: [{ plan: 'plan_D37UJBYkjT1tyP' }],
     })
     .then(subscription => {
-      console.log('subscription', subscription)
       res.status(200).send({
         subscription,
       })
@@ -80,13 +76,10 @@ subscriptionController.CREATE_NEW_PRODUCT = (req, res) => {
       type: 'service',
     })
     .then(product => {
-      console.log('product', product)
       res.status({
         product,
       })
     })
 }
-
-subscriptionController.DELETE_PRODUCT = (req, res) => {}
 
 module.exports = subscriptionController
