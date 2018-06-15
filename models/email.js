@@ -1,6 +1,6 @@
-let emailModel = {}
-let Users = require('../db').Users
-let sendError = require('../helpers/sendError')
+const emailModel = {}
+const Users = require('../db').Users
+const sendError = require('../helpers/sendError')
 
 emailModel.PASSWORD_RESET = (email, token) => {
   return Users.update(

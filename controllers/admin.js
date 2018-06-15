@@ -1,12 +1,12 @@
-let adminController = {}
-let adminModel = require('../models/admin')
-let authHelpers = require('../helpers/auth')
-let mailgun = require('mailgun-js')({
+const adminController = {}
+const adminModel = require('../models/admin')
+const authHelpers = require('../helpers/auth')
+const mailgun = require('mailgun-js')({
   apiKey: process.env.MAILGUN_API,
   domain: process.env.MAILGUN_DOMAIN,
 })
-let verifyToken = require('../helpers/auth').verifyToken
-let sendError = require('../helpers/sendError')
+const verifyToken = require('../helpers/auth').verifyToken
+const sendError = require('../helpers/sendError')
 
 // QUESTIONS
 adminController.ADD_QUESTION = (req, res) => {

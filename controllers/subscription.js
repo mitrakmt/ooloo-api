@@ -1,7 +1,7 @@
-let subscriptionController = {}
-let subscriptionModel = require('../models/subscription')
-let userModel = require('../models/user')
-let stripe = require('stripe')(process.env.STRIPE_KEY)
+const subscriptionController = {}
+const subscriptionModel = require('../models/subscription')
+const userModel = require('../models/user')
+const stripe = require('stripe')(process.env.STRIPE_KEY)
 
 // PLANS
 subscriptionController.CREATE_NEW_PLAN = (req, res) => {

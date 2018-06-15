@@ -1,5 +1,5 @@
-let subscriptionModel = {}
-let User = require('../db').Users
+const subscriptionModel = {}
+const User = require('../db').Users
 
 subscriptionModel.SAVE_CUSTOMER_ID = (id, customerId) => {
   return User.findOne({

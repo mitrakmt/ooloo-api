@@ -1,5 +1,5 @@
-let subscriptionRouter = require('express').Router()
-let subscriptionController = require('../controllers/subscription')
+const subscriptionRouter = require('express').Router()
+const subscriptionController = require('../controllers/subscription')
 const checkJwt = require('../middleware/auth')
 const checkAdmin = require('../middleware/admin')
 

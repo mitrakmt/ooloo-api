@@ -1,5 +1,5 @@
-let adminRouter = require('express').Router()
-let adminController = require('../controllers/admin')
+const adminRouter = require('express').Router()
+const adminController = require('../controllers/admin')
 const checkAdmin = require('../middleware/admin')
 
 adminRouter
