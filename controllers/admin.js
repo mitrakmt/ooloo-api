@@ -30,6 +30,7 @@ adminController.GET_ALL_QUESTIONS = (req, res) => {
   let filters = {
     creator: req.query.creator,
     difficulty: req.query.difficulty,
+    topics: req.query.topics,
   }
   let finalFilters = _.pickBy(filters, item => {
     return !_.isUndefined(item)
@@ -43,6 +44,7 @@ adminController.GET_ACTIVE_QUESTIONS = (req, res) => {
   let filters = {
     creator: req.query.creator,
     difficulty: req.query.difficulty,
+    topics: req.query.topics,
     isActive: true,
   }
   let finalFilters = _.pickBy(filters, item => {

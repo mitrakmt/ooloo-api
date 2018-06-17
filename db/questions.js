@@ -13,11 +13,11 @@ module.exports = db => {
         required: true,
       },
       answers: {
-        type: Sequelize.JSON,
+        type: Sequelize.ARRAY(Sequelize.STRING),
         required: true,
       },
       correctAnswer: {
-        type: Sequelize.JSON,
+        type: Sequelize.ARRAY(Sequelize.STRING),
         required: true,
       },
       difficulty: {
@@ -25,7 +25,7 @@ module.exports = db => {
         required: true,
       },
       topics: {
-        type: Sequelize.JSON,
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
         required: true,
       },
       image: {
