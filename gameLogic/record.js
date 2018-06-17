@@ -49,9 +49,6 @@ const recordAnswers = (gameId, playersArray, answersTuple, questionsArray, start
 	});
 };
 
-const updatePlayerScore = (playerId)=>{
-
-}
 
 module.exports = {
 	recordGameFinish,
