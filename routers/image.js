@@ -1,5 +1,5 @@
-let imageRouter = require('express').Router()
-let imageController = require('../controllers/image')
+const imageRouter = require('express').Router()
+const imageController = require('../controllers/image')
 
 imageRouter
   .route('/profile/:userId')

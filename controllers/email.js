@@ -1,10 +1,10 @@
-let emailController = {}
-let Mailchimp = require('mailchimp-api-v3')
-let mailchimp = new Mailchimp(process.env.MAILCHIMP_API)
-let mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN })
-let emailModel = require('../models/email')
-let generatePasswordResetToken = require('../helpers/auth').generatePasswordResetToken
-let sendError = require('../helpers/sendError')
+const emailController = {}
+const Mailchimp = require('mailchimp-api-v3')
+const mailchimp = new Mailchimp(process.env.MAILCHIMP_API)
+const mailgun = require('mailgun-js')({ apiKey: process.env.MAILGUN_API, domain: process.env.MAILGUN_DOMAIN })
+const emailModel = require('../models/email')
+const generatePasswordResetToken = require('../helpers/auth').generatePasswordResetToken
+const sendError = require('../helpers/sendError')
 
 emailController.CONTACT_US = (req, res) => {
   let message = req.body.message

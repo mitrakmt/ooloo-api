@@ -1,5 +1,5 @@
-let schoolController = {}
-let schoolModel = require('../models/school')
+const schoolController = {}
+const schoolModel = require('../models/school')
 
 schoolController.GET_SCHOOLS = (req, res) => {
   schoolModel.GET_SCHOOLS().then(status => {

@@ -1,6 +1,6 @@
-let interestController = {}
-let interestModel = require('../models/interest')
-let sendError = require('../helpers/sendError')
+const interestController = {}
+const interestModel = require('../models/interest')
+const sendError = require('../helpers/sendError')
 
 interestController.GET_INTERESTS = (req, res) => {
   let userId = req.user.id

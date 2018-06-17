@@ -1,9 +1,9 @@
-let interestModel = {}
-let User = require('../db').Users
-let Interest = require('../db').Interests
-let UsersInterests = require('../db').UsersInterests
-let _ = require('lodash')
-let sendError = require('../helpers/sendError')
+const interestModel = {}
+const User = require('../db').Users
+const Interest = require('../db').Interests
+const UsersInterests = require('../db').UsersInterests
+const _ = require('lodash')
+const sendError = require('../helpers/sendError')
 
 interestModel.GET_INTERESTS = userId => {
   return User.findOne({
