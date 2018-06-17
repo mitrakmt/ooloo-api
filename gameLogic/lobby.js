@@ -7,6 +7,8 @@ const {GET_QUESTIONS} = require('../models/question');
 
 const playerQueue = []; 
 
+const botTimer = 1000 * 15; 
+
 const addPlayerToQueue = (playerObj)=>{
 	playerQueue.push(playerObj); 
 };
@@ -17,15 +19,17 @@ const getQuestions = async(interests)=>{
 	const questions = await GET_QUESTIONS(interests); 
 	return questions; 
 };
-const queueOrMatch = async(playerObj, {_playerQueue = playerQueue, _getQuestions = getQuestions, _removePlayerFromQueue = removePlayerFromQueue, _addPlayerToQueue = addPlayerToQueue} = {})=>{
+const queueOrMatch = async(playerObj, {_startBotGameTimer = startBotGameTimer, _playerQueue = playerQueue, _getQuestions = getQuestions, _removePlayerFromQueue = removePlayerFromQueue, _addPlayerToQueue = addPlayerToQueue} = {})=>{
 	const playerInterests = playerObj.interests;
 	const opponentInterests = _playerQueue.map(({interests})=> interests);
 
 	const match = findOpponent(playerInterests, opponentInterests);
 	if(match === null){
+		_startBotGameTimer(playerObj); 
 		_addPlayerToQueue(playerObj);
 	}else{
 		const opponent = _playerQueue[match.index];
+		clearTimeout(opponent.botTimerID); 
 		const gameObject = {
 			interests: match.interests,
 			players: [opponent, playerObj]
@@ -54,13 +58,23 @@ const playerConnects = async(socket, token, {id, _queueOrMatch = queueOrMatch} =
 		//const interests = await GET_INTERESTS(id); 
 		const interests = ['doctoring']; 
 		const playerObject = {socket, id, interests};
-		//_queueOrMatch(playerObject); 
-		botGame(playerObject); 
+		_queueOrMatch(playerObject); 
+		//botGame(playerObject); 
 	}catch(error){
 		console.error(error); 
 	}
 };
 
+const startBotGameTimer = (playerObj)=>{
+	const timerID = setTimeout(()=>{
+		const playerIndex = playerQueue.indexOf(playerObj);
+		if(playerIndex >= 0){
+			removePlayerFromQueue(playerIndex);
+			botGame(playerObj); 
+		}
+	}, botTimer)
+	playerObj.botTimerID = timerID; 
+}
 
 module.exports = {
 	addPlayerToQueue,

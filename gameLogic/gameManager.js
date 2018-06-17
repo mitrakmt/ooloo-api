@@ -1,6 +1,7 @@
 const {pickInterest} = require('./util'); 
 const {recordGameStart, recordGameFinish} = require('./record'); 
 const config = {
+	//duration: 1000 * 60 * 5,
 	duration: 1000 * 60 * 5,
 	questions: 10, 
 	pointsPerQuestion: 1000
@@ -13,7 +14,9 @@ const setupGame = async(gameObject, _config = config)=>{
 	gameObject.finishedTime = new Array(2); 
 	gameObject.pointsPerQuestion = _config.pointsPerQuestion; 
 	gameObject.answers = createAnswerArray(gameObject.questions.length);
-	gameObject.gameID = await recordGameStart(gameObject); 
+	gameObject.gameID = await recordGameStart(gameObject);
+	gameObject.numberOfPlayers = gameObject.players.length;
+	gameObject.playersFinished = 0; 
 	players.forEach(({socket}, index)=>{
 		//What other info should this have?
 		socket.emit('gameStart', 
@@ -46,16 +49,20 @@ const createAnswerArray = (questions)=>{
 	}
 	return array;
 };
-//TODO Currently tears down when one player finishes.
+
+
 const gameFinished = (gameObject)=>{
+	gameObject.playersFinished++;
 	const gameState = getCurrentGameState(gameObject); 
 	gameState.score = gameState.score.map((points)=>{
 		return Math.round(points * (1 - ((gameObject.duration - gameState.remainingTime) / 1000 / 600)));
 	});
 	gameObject.state = gameState; 
-	recordGameFinish(gameObject); 
 	sendFinalResults(gameObject, gameState); 
-	tearDown(gameObject);
+	if(gameObject.playersFinished >= gameObject.numberOfPlayers || gameObject.outOfTime){
+		recordGameFinish(gameObject); 
+		tearDown(gameObject);
+	}
 };
 const sendFinalResults = (gameObject, gameState)=>{
 	const results = {
@@ -64,8 +71,10 @@ const sendFinalResults = (gameObject, gameState)=>{
 		gameID: gameObject.gameID
 	};
 	gameObject.scoreState = gameState; 
-	gameObject.players.forEach(({socket})=>{
-		socket.emit('gameResults', {...results});
+	gameObject.players.forEach(({isFinished, socket})=>{
+		if(isFinished === true || gameObject.outOfTime){
+			socket.emit('gameResults', {...results});
+		}
 	});
 };
 const tearDown = (gameObject)=>{
@@ -79,6 +88,7 @@ const answerReceived = (socket, playerIndex, answer, questionNumber, gameObject)
 	const scoreObj = getCurrentGameState(gameObject); 
 	sendResults({...answerObj, ...scoreObj}, gameObject);
 	if(questionNumber + 1 >= gameObject.questions.length){
+		gameObject.players[playerIndex].isFinished = true; 
 		answeredAllQuestions(socket, gameObject); 
 	}else{
 		sendQuestion(socket, questionNumber + 1, gameObject);
@@ -110,7 +120,8 @@ const sendResults = (resultsObj, gameObject)=>{
 };
 const checkAnswer = (questionNumber, answer, playerIndex, gameObject)=>{
 	const correctAnswer = gameObject.questions[questionNumber].answer;
-	const correct = (correctAnswer === answer);
+	//THIS NEEDS TO BE UPDATED ONCE YOU HAVE MULTIPLE ANSWER TYPES
+	const correct = (correctAnswer[0] === answer);
 	const answerObj = gameObject.answers[questionNumber];
 	
 	answerObj[playerIndex] = {correct, answer, answerTime: Date.now()};
@@ -132,6 +143,7 @@ const timerExpired = (gameObject)=>{
 		}
 		return time; 
 	});
+	gameObject.outOfTime = true; 
 	gameFinished(gameObject);
 };
 module.exports = {
