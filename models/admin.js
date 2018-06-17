@@ -28,8 +28,8 @@ adminModel.ADD_QUESTION = question => {
 
 adminModel.GET_ALL_QUESTIONS = filters => {
   if (filters.topics) {
-    let topic = parseInt(filters.topics)
-    filters.topics = { [Op.overlap]: [topic] }
+    let topics = JSON.parse(filters.topics)
+    filters.topics = { [Op.overlap]: topics }
   }
   return Question.findAll({ where: filters }).then(questions => {
     return questions
@@ -54,8 +54,8 @@ adminModel.UPDATE_QUESTION = (questionId, question) => {
 
 adminModel.GET_ACTIVE_QUESTIONS = filters => {
   if (filters.topics) {
-    let topic = parseInt(filters.topics)
-    filters.topics = { [Op.overlap]: [topic] }
+    let topics = JSON.parse(filters.topics)
+    filters.topics = { [Op.overlap]: topics }
   }
   return Question.findAll({
     where: filters,
