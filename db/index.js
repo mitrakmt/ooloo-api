@@ -13,9 +13,9 @@ const LoadingFacts = require('./loadingFacts')(db)
 // CREATE JOIN TABLES
 const UsersInterests = db.define('UsersInterests', {})
 const UsersGames = db.define('UsersGames', {
-	score: Sequelize.INTEGER,
-	userId: Sequelize.INTEGER,
-	gameId: Sequelize.INTEGER
+  score: Sequelize.INTEGER,
+  userId: Sequelize.INTEGER,
+  gameId: Sequelize.INTEGER,
 })
 
 /**
@@ -32,19 +32,16 @@ Users.belongsToMany(Interests, {
   foreignKey: 'userId',
 })
 
+Users.belongsToMany(Games, { through: 'UsersGames', foreignKey: 'userId' })
+Games.belongsToMany(Users, { through: 'UsersGames', foreignKey: 'gameId' })
 
-Users.belongsToMany(Games, {through: 'UsersGames', foreignKey: 'userId'})
-Games.belongsToMany(Users, {through: 'UsersGames', foreignKey: 'gameId'})
-
-Answers.belongsTo(Users, {foreignKey: 'userId'})
-Answers.belongsTo(Games, {foreignKey: 'gameId'})
-
+Answers.belongsTo(Users, { foreignKey: 'userId' })
+Answers.belongsTo(Games, { foreignKey: 'gameId' })
 
 // HELPER FUNCTION TO DROP ALL TABLES, LEAVE THIS FOR NOW
 // db.sync({ force: true }).then(() => {
 //   console.log("Tables have been dropped");
 // });
-
 
 db.sync().then(function() {
   console.log('Tables have been Created')

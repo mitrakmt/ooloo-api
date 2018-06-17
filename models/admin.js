@@ -24,8 +24,8 @@ adminModel.ADD_QUESTION = question => {
   })
 }
 
-adminModel.GET_ALL_QUESTIONS = () => {
-  return Question.findAll({}).then(questions => {
+adminModel.GET_ALL_QUESTIONS = filters => {
+  return Question.findAll({ where: filters }).then(questions => {
     return questions
   })
 }
@@ -46,11 +46,9 @@ adminModel.UPDATE_QUESTION = (questionId, question) => {
   })
 }
 
-adminModel.GET_ACTIVE_QUESTIONS = () => {
+adminModel.GET_ACTIVE_QUESTIONS = filters => {
   return Question.findAll({
-    where: {
-      isActive: true,
-    },
+    where: filters,
   }).then(questions => {
     return questions
   })

@@ -7,6 +7,7 @@ const mailgun = require('mailgun-js')({
 })
 const verifyToken = require('../helpers/auth').verifyToken
 const sendError = require('../helpers/sendError')
+const _ = require('lodash')
 
 // QUESTIONS
 adminController.ADD_QUESTION = (req, res) => {
@@ -17,6 +18,7 @@ adminController.ADD_QUESTION = (req, res) => {
     topics: req.body.topics,
     difficulty: req.body.difficulty,
     image: req.body.image,
+    createdBy: req.user.id,
   }
 
   adminModel.ADD_QUESTION(data).then(response => {
@@ -25,13 +27,29 @@ adminController.ADD_QUESTION = (req, res) => {
 }
 
 adminController.GET_ALL_QUESTIONS = (req, res) => {
-  adminModel.GET_ALL_QUESTIONS().then(response => {
+  let filters = {
+    creator: req.query.creator,
+    difficulty: req.query.difficulty,
+  }
+  let finalFilters = _.pickBy(filters, item => {
+    return !_.isUndefined(item)
+  })
+  adminModel.GET_ALL_QUESTIONS(finalFilters).then(response => {
     res.status(200).send(response)
   })
 }
 
 adminController.GET_ACTIVE_QUESTIONS = (req, res) => {
-  adminModel.GET_ACTIVE_QUESTIONS().then(response => {
+  let filters = {
+    creator: req.query.creator,
+    difficulty: req.query.difficulty,
+    isActive: true,
+  }
+  let finalFilters = _.pickBy(filters, item => {
+    return !_.isUndefined(item)
+  })
+
+  adminModel.GET_ACTIVE_QUESTIONS(finalFilters).then(response => {
     res.status(200).send(response)
   })
 }

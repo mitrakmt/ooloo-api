@@ -8,6 +8,10 @@ module.exports = db => {
         type: Sequelize.STRING(1000),
         required: true,
       },
+      createdBy: {
+        type: Sequelize.INTEGER,
+        required: true,
+      },
       answers: {
         type: Sequelize.JSON,
         required: true,
