@@ -27,8 +27,8 @@ const setupGame = async(gameObject, _config = config)=>{
 			playerIndex: index
 		});
 		sendQuestion(socket, 0, gameObject); 
-		socket.on('answer', ({playerIndex, answer, questionNumber})=>{
-			answerReceived(socket, playerIndex, answer, questionNumber, gameObject);
+		socket.on('answer', ({answer, questionNumber})=>{
+			answerReceived(socket, index, answer, questionNumber, gameObject);
 		});
 	});
 	const timerID = setTimeout(()=>timerExpired(gameObject), config.duration); 
