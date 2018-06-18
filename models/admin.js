@@ -5,6 +5,8 @@ const authHelpers = require('../helpers/auth')
 const Interest = require('../db').Interests
 const School = require('../db').Schools
 const LoadingFact = require('../db').LoadingFacts
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 const _ = require('lodash')
 const sendError = require('../helpers/sendError')
 
@@ -24,8 +26,12 @@ adminModel.ADD_QUESTION = question => {
   })
 }
 
-adminModel.GET_ALL_QUESTIONS = () => {
-  return Question.findAll({}).then(questions => {
+adminModel.GET_ALL_QUESTIONS = filters => {
+  if (filters.topics) {
+    let topics = JSON.parse(filters.topics)
+    filters.topics = { [Op.overlap]: topics }
+  }
+  return Question.findAll({ where: filters }).then(questions => {
     return questions
   })
 }
@@ -46,11 +52,13 @@ adminModel.UPDATE_QUESTION = (questionId, question) => {
   })
 }
 
-adminModel.GET_ACTIVE_QUESTIONS = () => {
+adminModel.GET_ACTIVE_QUESTIONS = filters => {
+  if (filters.topics) {
+    let topics = JSON.parse(filters.topics)
+    filters.topics = { [Op.overlap]: topics }
+  }
   return Question.findAll({
-    where: {
-      isActive: true,
-    },
+    where: filters,
   }).then(questions => {
     return questions
   })
