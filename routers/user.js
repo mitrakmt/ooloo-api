@@ -275,6 +275,15 @@ userRouter
    */
   .post(userController.VERIFY_EMAIL)
 
+
+userRouter
+  .route('/rank/:username')
+  .get(userController.GET_USER_RANK)
+
+userRouter
+   .route('/topusers')
+   .get(userController.GET_TOP_USERS)
+
 userRouter
   .route('/:username')
   /**
@@ -315,5 +324,8 @@ userRouter
    *     }
    */
   .get(checkJwt, userController.GET_USER_PROFILE)
+
+
+
 
 module.exports = userRouter

@@ -178,4 +178,24 @@ userController.UPDATE_USER = (req, res) => {
   })
 }
 
+userController.GET_USER_RANK = async(req, res) => {
+  try{
+    const id = req.params.username; 
+    const rank = await userModel.GET_USER_RANK(id);
+    res.status(200).send({rank});
+  }
+  catch(error){
+    res.status(500).send(error);
+  }
+}
+
+userController.GET_TOP_USERS = async(req, res) =>{
+  try{
+    const topUsers = await userModel.GET_TOP_USERS(); 
+    res.status(200).send(topUsers); 
+  }catch(error){
+    res.status(500).send(error);
+  }
+}
+
 module.exports = userController

@@ -2,6 +2,7 @@ const userModel = {}
 const User = require('../db').Users
 const authHelpers = require('../helpers/auth')
 const _ = require('lodash')
+const {Op} = require('sequelize'); 
 const sendError = require('../helpers/sendError')
 
 userModel.SIGN_UP = (email, password, username) => {
@@ -161,6 +162,30 @@ userModel.VERIFY_EMAIL = id => {
   ).then(user => {
     return true
   })
+}
+
+userModel.GET_USER_RANK = async(id)=>{
+  try{
+    pointsObj = await User.findOne({where:{id}, attributes:['points']});
+    const rank = await User.count({where: {points: {[Op.gt]: pointsObj.dataValues.points}}})
+    return rank;
+  }catch(error){
+    console.error('Error in get rank model', error);
+  }
+}
+
+
+userModel.GET_TOP_USERS = async()=>{
+  try{
+    const topUsers = await User.findAll({
+      attributes:['username', 'points', 'university'], 
+      limit:10,
+      order:[['points', 'DESC'],['updatedAt']]
+    });
+    return topUsers;
+  }catch(error){
+    console.error('Error in get rank model', error);
+  }
 }
 
 module.exports = userModel
