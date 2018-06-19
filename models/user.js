@@ -168,7 +168,7 @@ userModel.GET_USER_RANK = async(id)=>{
   try{
     pointsObj = await User.findOne({where:{id}, attributes:['points']});
     const rank = await User.count({where: {points: {[Op.gt]: pointsObj.dataValues.points}}})
-    return rank;
+    return rank + 1;
   }catch(error){
     console.error('Error in get rank model', error);
   }
