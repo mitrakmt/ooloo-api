@@ -4,6 +4,7 @@ const {findOpponent} = require('./util');
 const mockQuestions = require('./mockQuestions');
 const {setupGame} = require('./gameManager'); 
 const {GET_QUESTIONS} = require('../models/question');
+const {GET_USER} = require('../models/user');
 
 const playerQueue = []; 
 
@@ -56,8 +57,9 @@ const playerConnects = async(socket, token, {id, _queueOrMatch = queueOrMatch} =
 		}
 		//TODO put back when interests are more of a thing
 		//const interests = await GET_INTERESTS(id); 
+		const {username} = await GET_USER(id); 
 		const interests = ['doctoring']; 
-		const playerObject = {socket, id, interests};
+		const playerObject = {socket, id, interests, username};
 		_queueOrMatch(playerObject); 
 		//botGame(playerObject); 
 	}catch(error){

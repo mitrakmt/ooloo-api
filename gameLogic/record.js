@@ -1,4 +1,4 @@
-const {Games, Answers, UsersGames} = require('../db'); 
+const {Games, Answers, UsersGames, Users} = require('../db'); 
 
 const recordGameStart = async(gameObject)=>{
 	const game = await Games.create({topics: gameObject.interests});
@@ -28,20 +28,22 @@ const recordPlayersWithScore = (gameId, playersArray, scoreArray, {_UsersGames =
 };
 
 const recordAnswers = (gameId, playersArray, answersTuple, questionsArray, startTime, {_Answers = Answers} = {})=>{
-	answersTuple.forEach((answersArray, index)=>{
-		const userId = playersArray[index];
+	for(let i = 0; i < answersTuple.length; i++){
+		const answersArray = answersTuple[i]; 
 		let prevTime = startTime; 
-		answersArray.forEach((answerObj, index)=>{
+		for(let j = 0; j < answersArray.length; j++){
+			const answerObj = answersArray[j]; 
 			const timeTaken = answerObj.answerTime - prevTime; 
 			prevTime = answerObj.answerTime;
-			const {questionId} = questionsArray[index];
+			const {questionId} = questionsArray[j];
 			let {correct, answer: answered} = answerObj;
+			const userId = playersArray[j]; 
 			if(!Array.isArray(answered)){
 				answered = [answered]; 
 			}
 			_Answers.create({timeTaken, gameId, userId, questionId, answered, correct})
-		});
-	});
+		}
+	}
 };
 
 module.exports = {
