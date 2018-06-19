@@ -1,5 +1,6 @@
 const {pickInterest} = require('./util'); 
 const {recordGameStart, recordGameFinish} = require('./record'); 
+const {GET_USER_RANK} = require('../models/user'); 
 const config = {
 	//duration: 1000 * 60 * 5,
 	duration: 1000 * 60 * 5,
@@ -17,21 +18,21 @@ const setupGame = async(gameObject, _config = config)=>{
 	gameObject.gameID = await recordGameStart(gameObject);
 	gameObject.numberOfPlayers = gameObject.players.length;
 	gameObject.playersFinished = 0; 
+	gameObject.timerID = setTimeout(()=>timerExpired(gameObject), config.duration); 
 	players.forEach(({socket}, index)=>{
-		//What other info should this have?
 		socket.emit('gameStart', 
 		{
 			startTime: Date.now(),
 			duration: _config.duration,
 			numberOfQuestions: _config.questions,
-			playerIndex: index
+			playerIndex: index,
+			usernames: players.map(({username})=> username )
 		});
 		sendQuestion(socket, 0, gameObject); 
 		socket.on('answer', ({answer, questionNumber})=>{
 			answerReceived(socket, index, answer, questionNumber, gameObject);
 		});
 	});
-	const timerID = setTimeout(()=>timerExpired(gameObject), config.duration); 
 };
 
 
@@ -51,12 +52,13 @@ const createAnswerArray = (questions)=>{
 };
 
 
-const gameFinished = (gameObject)=>{
+const gameFinished = async(gameObject)=>{
 	gameObject.playersFinished++;
 	const gameState = getCurrentGameState(gameObject); 
 	gameState.score = gameState.score.map((points)=>{
 		return Math.round(points * (1 - ((gameObject.duration - gameState.remainingTime) / 1000 / 600)));
 	});
+	gameState.ranks = await getRank(gameObject.players); 
 	gameObject.state = gameState; 
 	sendFinalResults(gameObject, gameState); 
 	if(gameObject.playersFinished >= gameObject.numberOfPlayers || gameObject.outOfTime){
@@ -64,6 +66,11 @@ const gameFinished = (gameObject)=>{
 		tearDown(gameObject);
 	}
 };
+const getRank = async(players)=>{
+	let ranks = players.map(({id})=>GET_USER_RANK(id));
+	ranks = await Promise.all(ranks);
+	return ranks; 
+}
 const sendFinalResults = (gameObject, gameState)=>{
 	const results = {
 		...gameState,
@@ -82,16 +89,19 @@ const tearDown = (gameObject)=>{
 		socket.removeAllListeners('answer');
 		socket.disconnect(true); 
 	});
+	clearTimeout(gameObject.timerID); 
 };
 const answerReceived = (socket, playerIndex, answer, questionNumber, gameObject)=>{
-	const answerObj = checkAnswer(questionNumber, answer, playerIndex, gameObject);
-	const scoreObj = getCurrentGameState(gameObject); 
-	sendResults({...answerObj, ...scoreObj}, gameObject);
-	if(questionNumber + 1 >= gameObject.questions.length){
-		gameObject.players[playerIndex].isFinished = true; 
-		answeredAllQuestions(socket, gameObject); 
-	}else{
-		sendQuestion(socket, questionNumber + 1, gameObject);
+	const player = gameObject.players[playerIndex];
+	if(!player.isFinished){
+		const answerObj = checkAnswer(questionNumber, answer, playerIndex, gameObject);
+		const scoreObj = getCurrentGameState(gameObject); 
+		sendResults({...answerObj, ...scoreObj}, gameObject);
+		if(questionNumber + 1 >= gameObject.questions.length){
+			answeredAllQuestions(socket, gameObject, player); 
+		}else{
+			sendQuestion(socket, questionNumber + 1, gameObject);
+		}
 	}
 };
 const getCurrentGameState = (gameObject)=>{ 
@@ -128,8 +138,9 @@ const checkAnswer = (questionNumber, answer, playerIndex, gameObject)=>{
 	return {correct, playerIndex, questionNumber};
 };
 //TODO: Currently ends when one player finishes. Fine for now, modifiy for multiple players
-const answeredAllQuestions = (socket, gameObject, timerID)=>{
-	clearTimeout(timerID);
+const answeredAllQuestions = (socket, gameObject, player)=>{
+	player.isFinished = true;
+	player.finishedTime = Date.now();  
 	gameFinished(gameObject);
 };
 const sendQuestion = (socket, questionNumber, gameObject)=>{
