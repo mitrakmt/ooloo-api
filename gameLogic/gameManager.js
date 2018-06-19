@@ -59,6 +59,7 @@ const gameFinished = async(gameObject)=>{
 		return Math.round(points * (1 - ((gameObject.duration - gameState.remainingTime) / 1000 / 600)));
 	});
 	gameState.ranks = await getRank(gameObject.players); 
+	gameObject.finishedTime = gameObject.players.map(({finishedTime})=> finishedTime);
 	gameObject.state = gameState; 
 	sendFinalResults(gameObject, gameState); 
 	if(gameObject.playersFinished >= gameObject.numberOfPlayers || gameObject.outOfTime){
@@ -75,7 +76,8 @@ const sendFinalResults = (gameObject, gameState)=>{
 	const results = {
 		...gameState,
 		answers: gameObject.answers,
-		gameID: gameObject.gameID
+		gameID: gameObject.gameID,
+		finishedTime: gameObject.finishedTime
 	};
 	gameObject.scoreState = gameState; 
 	gameObject.players.forEach(({isFinished, socket})=>{
@@ -140,7 +142,7 @@ const checkAnswer = (questionNumber, answer, playerIndex, gameObject)=>{
 //TODO: Currently ends when one player finishes. Fine for now, modifiy for multiple players
 const answeredAllQuestions = (socket, gameObject, player)=>{
 	player.isFinished = true;
-	player.finishedTime = Date.now();  
+	player.finishedTime = Date.now() - gameObject.startTime;  
 	gameFinished(gameObject);
 };
 const sendQuestion = (socket, questionNumber, gameObject)=>{
@@ -154,6 +156,9 @@ const timerExpired = (gameObject)=>{
 		}
 		return time; 
 	});
+	gameObject.players.forEach((player)=>{
+		player.finishedTime = player.finishedTime || Date.now() - gameObject.startTime; 
+	})
 	gameObject.outOfTime = true; 
 	gameFinished(gameObject);
 };
