@@ -43,6 +43,7 @@ interestModel.ADD_INTEREST = (userId, interestId) => {
   })
 }
 
+// TODO: Return all interests
 interestModel.DELETE_INTEREST = (userId, interestId) => {
   return Interest.findOne({
     where: {
