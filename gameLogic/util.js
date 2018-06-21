@@ -25,7 +25,25 @@ const findOpponent = (player, opponents) => {
     return null;
 };
 
+const makeNullArray = (length)=>{
+    const result = [];
+    for(let i = 0; i < length; i++){
+        result.push(null); 
+    } 
+    return result; 
+}
+
+const makeEmptyObjArray = (length)=>{
+    const result = []; 
+    for(let i = 0; i < length; i++){
+        result.push ({})
+    }
+    return result; 
+}
+
 module.exports = {
     findOverlap,
-    findOpponent
+    findOpponent,
+    makeNullArray,
+    makeEmptyObjArray
 }

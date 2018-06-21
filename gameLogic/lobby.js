@@ -11,9 +11,11 @@ const playerQueue = [];
 const botTimer = 1000 * 15; 
 
 const addPlayerToQueue = (playerObj)=>{
-	playerQueue.push(playerObj); 
+	playerQueue.push(playerObj);
+	handleDisconnect(playerObj, playerObj.socket); 
 };
 const removePlayerFromQueue = (index)=>{
+	const player = playerQueue[index]; 
 	playerQueue.splice(index, 1); 
 };
 const getQuestions = async(interests)=>{
@@ -21,9 +23,9 @@ const getQuestions = async(interests)=>{
 	return questions; 
 };
 const queueOrMatch = async(playerObj, {_startBotGameTimer = startBotGameTimer, _playerQueue = playerQueue, _getQuestions = getQuestions, _removePlayerFromQueue = removePlayerFromQueue, _addPlayerToQueue = addPlayerToQueue} = {})=>{
+	//_playerQueue = playerQueue.filter(({socket})=> socket.connected);
 	const playerInterests = playerObj.interests;
 	const opponentInterests = _playerQueue.map(({interests})=> interests);
-
 	const match = findOpponent(playerInterests, opponentInterests);
 	if(match === null){
 		_startBotGameTimer(playerObj); 
@@ -77,6 +79,16 @@ const startBotGameTimer = (playerObj)=>{
 	}, botTimer)
 	playerObj.botTimerID = timerID; 
 }
+
+const handleDisconnect = (player, socket)=>{
+	socket.on('disconnect',()=>{
+		const index = playerQueue.indexOf(player);
+		if(index >= 0){
+			removePlayerFromQueue(index); 
+		}			
+	})
+}
+
 
 module.exports = {
 	addPlayerToQueue,
