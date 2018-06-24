@@ -17,6 +17,7 @@ const UsersGames = db.define('UsersGames', {
   userId: Sequelize.INTEGER,
   gameId: Sequelize.INTEGER,
 })
+const UsersSchools = db.define('UsersSchools', {})
 
 /**
  * Interests:Users
@@ -35,10 +36,12 @@ Users.belongsToMany(Interests, {
 Users.belongsToMany(Games, { through: 'UsersGames', foreignKey: 'userId' })
 Games.belongsToMany(Users, { through: 'UsersGames', foreignKey: 'gameId' })
 
+Users.belongsToMany(Schools, { through: 'UsersSchools', foreignKey: 'userId' })
+Schools.belongsToMany(Users, { through: 'UsersSchools', foreignKey: 'schoolId' })
 
-Users.hasMany(Answers, {foreignKey: 'userId'})
-Games.hasMany(Answers, {foreignKey: 'gameId'})
-Questions.hasMany(Answers, {foreignKey: 'questionId', as:'userAnswers'})
+Users.hasMany(Answers, { foreignKey: 'userId' })
+Games.hasMany(Answers, { foreignKey: 'gameId' })
+Questions.hasMany(Answers, { foreignKey: 'questionId', as: 'userAnswers' })
 
 // HELPER FUNCTION TO DROP ALL TABLES, LEAVE THIS FOR NOW
 // db.sync({ force: true }).then(() => {
@@ -59,5 +62,6 @@ module.exports = {
   Answers,
   Games,
   UsersGames,
+  UsersSchools,
   LoadingFacts,
 }
