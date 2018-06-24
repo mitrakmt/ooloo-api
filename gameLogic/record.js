@@ -42,16 +42,16 @@ const updatePlayerScore = async(userId)=>{
 	}
 }
 
-const recordAnswers = (gameId, playersArray, answersTuple, questionsArray, startTime, {_Answers = Answers} = {})=>{
-	for(let i = 0; i < answersTuple.length; i++){
-		const answersArray = answersTuple[i]; 
+const recordAnswers = (gameId, playersArray, answersArray, questionsArray, startTime, {_Answers = Answers} = {})=>{
+	for(let i = 0; i < answersArray.length; i++){
+		const playerTuple = answersArray[i]; 
 		let prevTime = startTime; 
-		for(let j = 0; j < answersArray.length; j++){
-			const answerObj = answersArray[j]; 
+		for(let j = 0; j < playerTuple.length; j++){
+			const answerObj = playerTuple[j]; 
 			if(answerObj){
 				const timeTaken = answerObj.answerTime - prevTime; 
 				prevTime = answerObj.answerTime;
-				const {questionId} = questionsArray[j];
+				const {questionId} = questionsArray[i];
 				let {correct, answer: answered} = answerObj;
 				const userId = playersArray[j]; 
 				if(!Array.isArray(answered)){

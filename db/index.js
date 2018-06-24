@@ -35,8 +35,10 @@ Users.belongsToMany(Interests, {
 Users.belongsToMany(Games, { through: 'UsersGames', foreignKey: 'userId' })
 Games.belongsToMany(Users, { through: 'UsersGames', foreignKey: 'gameId' })
 
-Answers.belongsTo(Users, { foreignKey: 'userId' })
-Answers.belongsTo(Games, { foreignKey: 'gameId' })
+
+Users.hasMany(Answers, {foreignKey: 'userId'})
+Games.hasMany(Answers, {foreignKey: 'gameId'})
+Questions.hasMany(Answers, {foreignKey: 'questionId', as:'userAnswers'})
 
 // HELPER FUNCTION TO DROP ALL TABLES, LEAVE THIS FOR NOW
 // db.sync({ force: true }).then(() => {
