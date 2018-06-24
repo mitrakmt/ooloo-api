@@ -20,6 +20,10 @@ module.exports = db => {
         type: Sequelize.STRING,
         required: true,
       },
+      points: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      }
     },
     {
       freezeTableName: true,

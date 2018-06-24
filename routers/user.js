@@ -281,8 +281,12 @@ userRouter
   .get(userController.GET_USER_RANK)
 
 userRouter
-   .route('/topusers')
+   .route('/leaderboard')
    .get(userController.GET_TOP_USERS)
+
+userRouter
+   .route('/leaderboard/:id')
+   .get(userController.GET_USER_LEADERBOARD)
 
 userRouter
   .route('/:username')

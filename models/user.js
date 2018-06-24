@@ -166,11 +166,12 @@ userModel.VERIFY_EMAIL = id => {
 
 userModel.GET_USER_RANK = async(id)=>{
   try{
-    pointsObj = await User.findOne({where:{id}, attributes:['points']});
-    const rank = await User.count({where: {points: {[Op.gt]: pointsObj.dataValues.points}}})
-    return rank + 1;
+    const pointsObj = await User.findOne({where:{id}, attributes:['points', 'username', 'university']});
+    const {username, university, points} = pointsObj; 
+    const rank = await User.count({where: {points: {[Op.gt]: points}}})
+    return {rank: rank + 1, username, university, points, id};
   }catch(error){
-    console.error('Error in get rank model', error);
+    console.error('Error in get user rank model', error);
   }
 }
 
@@ -182,9 +183,27 @@ userModel.GET_TOP_USERS = async()=>{
       limit:10,
       order:[['points', 'DESC'],['updatedAt']]
     });
-    return topUsers;
+    return topUsers.map(({dataValues})=> dataValues);
   }catch(error){
     console.error('Error in get rank model', error);
+  }
+}
+
+userModel.GET_USER_LEADERBOARD = async(id)=>{
+  console.log('starting user leaderboard');
+  try{
+    const topUsersPromise = userModel.GET_TOP_USERS(); 
+    const userRankPromise = userModel.GET_USER_RANK(id); 
+    const [topUsers, userRank] = await Promise.all([topUsersPromise, userRankPromise]);
+    const leaderboard = topUsers.map((user, index)=> ({...user, rank: index + 1}));
+    if(userRank.rank <= 10){
+      leaderboard[userRank.rank-1].isYou = true; 
+    }else{
+      leaderboard.push({...userRank, isYou:true})
+    }
+    return leaderboard;
+  }catch(error){
+    console.error('Getting userModel leaderboard errror', error); 
   }
 }
 
