@@ -1,8 +1,10 @@
 const userModel = {}
 const User = require('../db').Users
+const School = require('../db').Schools
+const UsersSchools = require('../db').UsersSchools
 const authHelpers = require('../helpers/auth')
 const _ = require('lodash')
-const {Op} = require('sequelize'); 
+const { Op } = require('sequelize')
 const sendError = require('../helpers/sendError')
 
 userModel.SIGN_UP = (email, password, username) => {
@@ -132,6 +134,23 @@ userModel.UPDATE_USER = (id, dataToUpdate) => {
   })
 }
 
+userModel.ADD_USER_SCHOOL = (userId, schoolId) => {
+  return UsersSchools.create({
+    userId,
+    schoolId,
+  }).then(status => {
+    if (status) {
+      return {
+        success: true,
+      }
+    } else {
+      return {
+        success: false,
+      }
+    }
+  })
+}
+
 userModel.PASSWORD_RESET = (password, email) => {
   return authHelpers.hashPassword(password).then(hash => {
     return User.update(
@@ -164,46 +183,45 @@ userModel.VERIFY_EMAIL = id => {
   })
 }
 
-userModel.GET_USER_RANK = async(id)=>{
-  try{
-    const pointsObj = await User.findOne({where:{id}, attributes:['points', 'username', 'university']});
-    const {username, university, points} = pointsObj; 
-    const rank = await User.count({where: {points: {[Op.gt]: points}}})
-    return {rank: rank + 1, username, university, points, id};
-  }catch(error){
-    console.error('Error in get user rank model', error);
+userModel.GET_USER_RANK = async id => {
+  try {
+    const pointsObj = await User.findOne({ where: { id }, attributes: ['points', 'username', 'university'] })
+    const { username, university, points } = pointsObj
+    const rank = await User.count({ where: { points: { [Op.gt]: points } } })
+    return { rank: rank + 1, username, university, points, id }
+  } catch (error) {
+    console.error('Error in get user rank model', error)
   }
 }
 
-
-userModel.GET_TOP_USERS = async()=>{
-  try{
+userModel.GET_TOP_USERS = async () => {
+  try {
     const topUsers = await User.findAll({
-      attributes:['username', 'points', 'university'], 
-      limit:10,
-      order:[['points', 'DESC'],['updatedAt']]
-    });
-    return topUsers.map(({dataValues})=> dataValues);
-  }catch(error){
-    console.error('Error in get rank model', error);
+      attributes: ['username', 'points', 'university'],
+      limit: 10,
+      order: [['points', 'DESC'], ['updatedAt']],
+    })
+    return topUsers.map(({ dataValues }) => dataValues)
+  } catch (error) {
+    console.error('Error in get rank model', error)
   }
 }
 
-userModel.GET_USER_LEADERBOARD = async(id)=>{
-  console.log('starting user leaderboard');
-  try{
-    const topUsersPromise = userModel.GET_TOP_USERS(); 
-    const userRankPromise = userModel.GET_USER_RANK(id); 
-    const [topUsers, userRank] = await Promise.all([topUsersPromise, userRankPromise]);
-    const leaderboard = topUsers.map((user, index)=> ({...user, rank: index + 1}));
-    if(userRank.rank <= 10){
-      leaderboard[userRank.rank-1].isYou = true; 
-    }else{
-      leaderboard.push({...userRank, isYou:true})
+userModel.GET_USER_LEADERBOARD = async id => {
+  console.log('starting user leaderboard')
+  try {
+    const topUsersPromise = userModel.GET_TOP_USERS()
+    const userRankPromise = userModel.GET_USER_RANK(id)
+    const [topUsers, userRank] = await Promise.all([topUsersPromise, userRankPromise])
+    const leaderboard = topUsers.map((user, index) => ({ ...user, rank: index + 1 }))
+    if (userRank.rank <= 10) {
+      leaderboard[userRank.rank - 1].isYou = true
+    } else {
+      leaderboard.push({ ...userRank, isYou: true })
     }
-    return leaderboard;
-  }catch(error){
-    console.error('Getting userModel leaderboard errror', error); 
+    return leaderboard
+  } catch (error) {
+    console.error('Getting userModel leaderboard errror', error)
   }
 }
 
