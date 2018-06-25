@@ -3,12 +3,11 @@ const { GET_INTERESTS } = require('../models/interest');
 const {findOpponent} = require('./util');
 const mockQuestions = require('./mockQuestions');
 const {setupGame} = require('./gameManager'); 
+const {botTimer} = require('./gameConfig');
 const {GET_QUESTIONS, GET_BIASED_QUESTIONS} = require('../models/question');
 const {GET_USER} = require('../models/user');
 
 const playerQueue = []; 
-
-const botTimer = 1000 * 15; 
 
 const addPlayerToQueue = (playerObj)=>{
 	playerQueue.push(playerObj);
