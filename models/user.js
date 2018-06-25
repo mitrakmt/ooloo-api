@@ -190,7 +190,6 @@ userModel.GET_TOP_USERS = async()=>{
 }
 
 userModel.GET_USER_LEADERBOARD = async(id)=>{
-  console.log('starting user leaderboard');
   try{
     const topUsersPromise = userModel.GET_TOP_USERS(); 
     const userRankPromise = userModel.GET_USER_RANK(id); 
