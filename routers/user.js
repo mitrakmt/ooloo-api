@@ -275,18 +275,16 @@ userRouter
    */
   .post(userController.VERIFY_EMAIL)
 
+userRouter.route('/rank/:username').get(userController.GET_USER_RANK)
 
 userRouter
-  .route('/rank/:username')
-  .get(userController.GET_USER_RANK)
+  .route('/school')
+  .post(checkJwt, userController.ADD_USER_SCHOOL)
+  .delete(checkJwt, userController.REMOVE_USER_SCHOOL)
 
-userRouter
-   .route('/leaderboard')
-   .get(userController.GET_TOP_USERS)
+userRouter.route('/leaderboard').get(userController.GET_TOP_USERS)
 
-userRouter
-   .route('/leaderboard/:id')
-   .get(userController.GET_USER_LEADERBOARD)
+userRouter.route('/leaderboard/:id').get(userController.GET_USER_LEADERBOARD)
 
 userRouter
   .route('/:username')
@@ -328,8 +326,5 @@ userRouter
    *     }
    */
   .get(checkJwt, userController.GET_USER_PROFILE)
-
-
-
 
 module.exports = userRouter

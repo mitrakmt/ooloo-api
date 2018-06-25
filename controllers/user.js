@@ -178,32 +178,42 @@ userController.UPDATE_USER = (req, res) => {
   })
 }
 
-userController.GET_USER_RANK = async(req, res) => {
-  try{
-    const id = req.params.id; 
-    const rank = await userModel.GET_USER_RANK(id);
-    res.status(200).send(rank);
-  }
-  catch(error){
-    res.status(500).send(error);
+userController.ADD_USER_SCHOOL = (req, res) => {
+  let userId = req.user.id
+  let schoolId = req.body.schoolId
+
+  return userModel.ADD_USER_SCHOOL(userId, schoolId).then(user => {
+    res.status(200).send(user)
+  })
+}
+
+userController.REMOVE_USER_SCHOOL = (req, res) => {}
+
+userController.GET_USER_RANK = async (req, res) => {
+  try {
+    const id = req.params.id
+    const rank = await userModel.GET_USER_RANK(id)
+    res.status(200).send(rank)
+  } catch (error) {
+    res.status(500).send(error)
   }
 }
 
-userController.GET_TOP_USERS = async(req, res) =>{
-  try{
-    const topUsers = await userModel.GET_TOP_USERS(); 
-    res.status(200).send(topUsers); 
-  }catch(error){
-    res.status(500).send(error);
+userController.GET_TOP_USERS = async (req, res) => {
+  try {
+    const topUsers = await userModel.GET_TOP_USERS()
+    res.status(200).send(topUsers)
+  } catch (error) {
+    res.status(500).send(error)
   }
 }
 
-userController.GET_USER_LEADERBOARD = async(req, res)=>{
-  try{
-    const leadeboard = await userModel.GET_USER_LEADERBOARD(req.params.id);
+userController.GET_USER_LEADERBOARD = async (req, res) => {
+  try {
+    const leadeboard = await userModel.GET_USER_LEADERBOARD(req.params.id)
     res.status(200).send(leadeboard)
-  }catch(error){
-    res.status(500).send(error); 
+  } catch (error) {
+    res.status(500).send(error)
   }
 }
 
