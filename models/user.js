@@ -134,20 +134,39 @@ userModel.UPDATE_USER = (id, dataToUpdate) => {
   })
 }
 
-userModel.ADD_USER_SCHOOL = (userId, schoolId) => {
-  return UsersSchools.create({
-    userId,
-    schoolId,
-  }).then(status => {
-    if (status) {
-      return {
-        success: true,
-      }
-    } else {
-      return {
-        success: false,
-      }
-    }
+userModel.ADD_USER_SCHOOL = (userId, schoolName) => {
+  return User.findOne({
+    where: {
+      id: userId,
+    },
+  }).then(user => {
+    return user
+      .updateAttributes({
+        university: schoolName,
+      })
+      .then(status => {
+        return {
+          success: true,
+        }
+      })
+  })
+}
+
+userModel.DELETE_USER_SCHOOL = userId => {
+  return User.findOne({
+    where: {
+      id: userId,
+    },
+  }).then(user => {
+    return user
+      .updateAttributes({
+        university: null,
+      })
+      .then(status => {
+        return {
+          success: true,
+        }
+      })
   })
 }
 

@@ -18,7 +18,7 @@ module.exports = db => {
         required: true,
       },
       university: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         required: true,
       },
       password: {
