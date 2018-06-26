@@ -1,6 +1,6 @@
 const {GET_USER_RANK} = require('../../models/user'); 
 const {recordGameStart, recordGameFinish} = require('../record'); 
-const {db, Users} = require('../../db');
+const {db, Users, Answers} = require('../../db');
 
 const gameFinished = async(gameObject)=>{
 	gameObject.playersFinished++;
@@ -50,22 +50,26 @@ const modifyIfSoloGame = async(gameObject, gameState)=>{
 		gameState.score.push(averages.score); 
 		gameState.ranks.push(averages.rank); 
 		gameObject.finishedTime.push(45 * 1000); 
+		gameState.totalCorrect.push(averages.overall); 
 	}
 	return; 
 }
 const getAverages = async()=>{
 	try{
-		const scoreResults = await db.query('SELECT AVG(score) from "UsersGames";')
-		const score = Math.floor(scoreResults[0][0].avg);
+		const scoreResultsPromise = db.query('SELECT AVG(score) from "UsersGames";')
+		const numPlayersPromise = Users.count();
+		const correctPromise = Answers.count({where:{correct:true}});
+		const totalPromise = Answers.count();
+		const [scoreResults, numPlayers, correct, total] = await Promise.all([scoreResultsPromise, numPlayersPromise, correctPromise, totalPromise]) 
 		const finishedTime = 45 * 1000
-		const numPlayers = await Users.count();
-		const rank = Math.floor(numPlayers / 2) + 1; 
-		return {score, finishedTime, rank}; 
+		const rank = Math.floor(numPlayers / 2) + 1;
+		const score = Math.floor(scoreResults[0][0].avg);
+		const overall = Math.round((correct / total) * 100)/10; 
+		return {score, finishedTime, rank,overall}; 
 	}catch(error){
 		console.error('error in get averages:', error); 
 	}
 }
-
 const tearDown = (gameObject)=>{
 	gameObject.players.forEach(({socket})=>{
 		socket.removeAllListeners('answer');
