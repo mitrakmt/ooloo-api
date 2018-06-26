@@ -180,14 +180,20 @@ userController.UPDATE_USER = (req, res) => {
 
 userController.ADD_USER_SCHOOL = (req, res) => {
   let userId = req.user.id
-  let schoolId = req.body.schoolId
+  let schoolName = req.body.schoolName
 
-  return userModel.ADD_USER_SCHOOL(userId, schoolId).then(user => {
+  return userModel.ADD_USER_SCHOOL(userId, schoolName).then(user => {
     res.status(200).send(user)
   })
 }
 
-userController.REMOVE_USER_SCHOOL = (req, res) => {}
+userController.DELETE_USER_SCHOOL = (req, res) => {
+  let userId = req.user.id
+
+  return userModel.DELETE_USER_SCHOOL(userId).then(user => {
+    res.status(200).send(user)
+  })
+}
 
 userController.GET_USER_RANK = async (req, res) => {
   try {
