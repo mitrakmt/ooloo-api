@@ -1,13 +1,12 @@
 const findOverlap = (interestsArray1, interestsArray2) => {
     const interestsObj = interestsArray1.reduce((obj, interest) => {
-        obj[interest] = true;
+        obj[interest.name] = true;
         return obj;
     }, {});
 
     const mutualInterests = interestsArray2.filter((interest) => {
-        return Boolean(interestsObj[interest]);
+        return Boolean(interestsObj[interest.name]);
     });
-
     if (mutualInterests.length > 0) {
         return mutualInterests;
     }
