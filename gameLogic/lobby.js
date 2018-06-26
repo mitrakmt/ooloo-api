@@ -21,7 +21,6 @@ const getQuestions = async(interests, playersArray)=>{
 	try{
 		const categories = interests.map(({id})=> id);
 		const questions = await GET_BIASED_QUESTIONS(categories, playersArray); 
-		console.log(questions); 
 		return questions; 
 	}catch(error){
 		console.error('Error in getQuestions lobby:', error); 
