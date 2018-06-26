@@ -38,7 +38,7 @@ const getRank = async(players)=>{
 	try{
 		let ranks = players.map(({id})=>GET_USER_RANK(id));
 		ranks = await Promise.all(ranks);
-		return ranks;
+		return ranks.map(({rank})=> rank);
 	}catch(error){
 		console.error('error in getting rank:', error); 
 	}
