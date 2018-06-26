@@ -2,8 +2,13 @@ const {Games, Answers, UsersGames, Users, Schools, UsersSchools} = require('../d
 const Sequelize = require('sequelize'); 
 
 const recordGameStart = async(gameObject)=>{
-	const game = await Games.create({topics: gameObject.interests});
-	return game.dataValues.id; 
+	try{
+		const topics = gameObject.interests.map(({id})=>id);
+		const game = await Games.create({topics});
+		return game.dataValues.id; 
+	}catch(error){
+		console.error('error recordding game', error); 
+	}
 };
 
 const recordGameFinish = (gameObject)=>{
