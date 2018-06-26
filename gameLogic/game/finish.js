@@ -35,7 +35,7 @@ const sendFinalResults = (gameObject, gameState)=>{
 const getRank = async(players)=>{
 	let ranks = players.map(({id})=>GET_USER_RANK(id));
 	ranks = await Promise.all(ranks);
-	return ranks; 
+	return ranks.map(({rank})=> rank); 
 }
 
 const tearDown = (gameObject)=>{
