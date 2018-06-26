@@ -15,6 +15,11 @@ const setupGameObject = async(gameObject, _config)=>{
 }
 
 const startGame = (players, gameObject, config, sendQuestion)=>{
+	const usernames = players.map(({username})=> username );
+	if(usernames.length === 1){
+		usernames.push('Average Scores: '); 
+		gameObject.isSoloGame = true; 
+	} 
 	players.forEach(({socket}, index)=>{
 		socket.emit('gameStart', 
 		{
@@ -22,7 +27,7 @@ const startGame = (players, gameObject, config, sendQuestion)=>{
 			duration: config.duration,
 			numberOfQuestions: config.questions,
 			playerIndex: index,
-			usernames: players.map(({username})=> username )
+			usernames
 		});
 		sendQuestion(socket, 0, gameObject); 
 	});
