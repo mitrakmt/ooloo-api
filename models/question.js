@@ -27,6 +27,7 @@ questionsModel.GET_BIASED_QUESTIONS = async (interests, playersArray) =>{
       include:{duplicate: false, model: Answers, as:'userAnswers', attributes:[]},
       group:'questions.id',
       raw:true,
+      where:{topics:{[Op.overlap]: interests}},
       order:[[Sequelize.literal('"numAnswered" ASC')]]
     })
     questions = questions.slice(0,10);
