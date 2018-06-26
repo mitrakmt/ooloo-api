@@ -13,6 +13,11 @@ const LoadingFacts = require('./loadingFacts')(db)
 // CREATE JOIN TABLES
 const UsersInterests = db.define('UsersInterests', {})
 const UsersGames = db.define('UsersGames', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true 
+  },
   score: Sequelize.INTEGER,
   userId: Sequelize.INTEGER,
   gameId: Sequelize.INTEGER,
