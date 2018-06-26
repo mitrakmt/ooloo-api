@@ -1,4 +1,5 @@
-const {Games, Answers, UsersGames, Users} = require('../db'); 
+const {Games, Answers, UsersGames, Users, Schools, UsersSchools} = require('../db'); 
+const Sequelize = require('sequelize'); 
 
 const recordGameStart = async(gameObject)=>{
 	const game = await Games.create({topics: gameObject.interests});
@@ -27,16 +28,34 @@ const recordPlayersWithScore = async(gameId, playersArray, scoreArray, {_UsersGa
 			return _UsersGames.create({userId, score, gameId});
 		});
 		await Promise.all(scorePromises);
-		playersArray.forEach((userId)=>updatePlayerScore(userId)); 
+		playersArray.forEach((userId)=> updateScores(userId)); 
 	}catch(error){
 		console.error('recrdPlayersWithScore error: ', error); 
 	}
 };
 
+const updateScores = async(userId)=>{
+	await updatePlayerScore(userId); 
+	updatePlayersSchoolScore(userId)
+}
+
+const updatePlayersSchoolScore = async(userId)=>{
+	try{
+		const {dataValues:{university}} = await Users.findOne({
+			where:{id:userId},
+			attributes:['university']
+		})
+		const points = await Users.sum('points', {where:{university}})
+		Schools.update({points}, {where:{name: university}});
+	}catch(error){
+		console.error('updating school score error:', error);
+	}
+}
+
 const updatePlayerScore = async(userId)=>{
 	try{
 		const points = await UsersGames.sum('score', {where:{userId}});
-		Users.update({points}, {where:{id: userId}});
+		await Users.update({points}, {where:{id: userId}});
 	}catch(error){
 		console.error('updating player score error: ', error); 
 	}
