@@ -1,5 +1,7 @@
 const schoolModel = {}
 const School = require('../db').Schools
+const { Op } = require('sequelize')
+
 schoolModel.GET_SCHOOLS = () => {
   return School.findAll({
     where: {
@@ -13,11 +15,11 @@ schoolModel.GET_SCHOOLS = () => {
 }
 
 
-schoolModel.GET_SCHOOL_RANK = async(id)=>{
+schoolModel.GET_SCHOOL_RANK = async(name)=>{
   try{
-    pointsObj = await School.findOne({where:{id, isActive: true}, attributes:['points', 'name', 'id']});
+    pointsObj = await School.findOne({where:{name, isActive: true}, attributes:['points', 'name', 'name']});
     const rank = await School.count({where: {points: {[Op.gt]: pointsObj.dataValues.points}}})
-    return {rank: rank + 1, name, id};
+    return {rank: rank + 1, name};
   }catch(error){
     console.error('Error in get rank model', error);
   }
@@ -27,7 +29,7 @@ schoolModel.GET_SCHOOL_RANK = async(id)=>{
 schoolModel.GET_TOP_SCHOOLS = async()=>{
 	try{
 		const topSchool = await School.findAll({
-		  attributes:['name', 'points', 'id'], 
+		  attributes:['name', 'points', 'name'], 
 		  limit:10,
 		  order:[['points', 'DESC'],['updatedAt']]
 		});
@@ -37,19 +39,20 @@ schoolModel.GET_TOP_SCHOOLS = async()=>{
 	}
 }
 
-schoolModel.GET_SCHOOL_LEADERBOARD = async(id)=>{
+schoolModel.GET_SCHOOL_LEADERBOARD = async(name)=>{
 	try{
-		const topSchoolsPromise = schoolModel.GET_TOP_USERS(); 
-		const schoolRankePromise = schoolModel.GET_USER_RANK(id); 
-		const [topSchools, schoolRank] = await Promise.all(topSchoolsPromise, schoolRankePromise);
+		const topSchoolsPromise = schoolModel.GET_TOP_SCHOOLS(); 
+		const schoolRankePromise = schoolModel.GET_SCHOOL_RANK(name); 
+		const [topSchools, schoolRank] = await Promise.all([topSchoolsPromise, schoolRankePromise]);
 		const leaderboard = topSchools.map((user, index)=> ({...user, rank: index + 1}));
-		if(schoolRan.rankk <= 10){
-			leaderboard[rank-1].isYou = true; 
+		if(schoolRank.rank <= 10){
+			leaderboard[schoolRank.rank-1].isYourSchool = true; 
 		}else{
-			derboard.push({...schoolRank, isYourSChool:true})
+			leaderboard.push({...schoolRank, isYourSchool:true})
 		}
+		return leaderboard;
 	}catch(error){
-		console.error('Error in get school leaderboard model'); 
+		console.error('Error in get school leaderboard model', error); 
 	}
 }
 

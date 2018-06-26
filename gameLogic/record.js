@@ -36,8 +36,7 @@ const recordPlayersWithScore = async(gameId, playersArray, scoreArray, {_UsersGa
 
 const updateScores = async(userId)=>{
 	await updatePlayerScore(userId); 
-	//UNCOMMENT WHEN DB IS CHANGED TO HAVING UNIVERSITY COLUMN ON USERS
-	//updatePlayersSchoolScore(userId)
+	updatePlayersSchoolScore(userId)
 }
 
 const updatePlayersSchoolScore = async(userId)=>{
