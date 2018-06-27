@@ -172,14 +172,7 @@ adminController.ADD_NEWS = (req, res) => {
 }
 
 adminController.DELETE_NEWS = (req, res) => {
-  const adminPassword = req.body.adminPassword
   const newsId = req.body.newsId
-  if (adminPassword !== process.env.ADMIN_PASSWORD) {
-    res.status(401).send({
-      error: 'Unauthorized',
-    })
-    return
-  }
   adminModel.DELETE_NEWS(newsId).then(response => {
     res.status(200).send(response)
   })
