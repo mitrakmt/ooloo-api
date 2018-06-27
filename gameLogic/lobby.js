@@ -3,7 +3,7 @@ const { GET_INTERESTS } = require('../models/interest');
 const {findOpponent} = require('./util');
 const mockQuestions = require('./mockQuestions');
 const {setupGame} = require('./gameManager'); 
-const {botTimer} = require('./gameConfig');
+const {botTimer, matchFoundTimer} = require('./gameConfig');
 const {GET_QUESTIONS, GET_BIASED_QUESTIONS} = require('../models/question');
 const {GET_USER} = require('../models/user');
 
@@ -26,6 +26,14 @@ const getQuestions = async(interests, playersArray)=>{
 		console.error('Error in getQuestions lobby:', error); 
 	}
 };
+const matchFound = (gameObject)=>{
+	console.log('match found'); 
+	const interests = gameObject.interests.map(({name})=>name);
+	gameObject.players.forEach(({socket})=>{
+		socket.emit('matchFound', {interests})
+	}); 
+	setTimeout(()=> setupGame(gameObject), matchFoundTimer);
+}
 const queueOrMatch = async(playerObj, {_startBotGameTimer = startBotGameTimer, _playerQueue = playerQueue, _getQuestions = getQuestions, _removePlayerFromQueue = removePlayerFromQueue, _addPlayerToQueue = addPlayerToQueue} = {})=>{
 	//_playerQueue = playerQueue.filter(({socket})=> socket.connected);
 	const playerInterests = playerObj.interests;
@@ -43,7 +51,7 @@ const queueOrMatch = async(playerObj, {_startBotGameTimer = startBotGameTimer, _
 		};
 		_removePlayerFromQueue(match.index); 
 		gameObject.questions = await _getQuestions(gameObject.interests, gameObject.players);
-		setupGame(gameObject); 
+		matchFound(gameObject); 
 	}
 };
 const botGame = async(playerObj)=>{
@@ -53,7 +61,7 @@ const botGame = async(playerObj)=>{
 			players: [playerObj],
 			questions
 		};
-	setupGame(gameObject); 
+	matchFound(gameObject); 
 };
 const playerConnects = async(socket, token, {id, _queueOrMatch = queueOrMatch} = {})=>{
 	try{
