@@ -5,6 +5,7 @@ const authHelpers = require('../helpers/auth')
 const Interest = require('../db').Interests
 const School = require('../db').Schools
 const LoadingFact = require('../db').LoadingFacts
+const News = require('../db').News
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const _ = require('lodash')
@@ -185,6 +186,50 @@ adminModel.CREATE_ADMIN = (email, password, username) => {
         })
       })
     })
+  })
+}
+
+adminModel.GET_NEWS = () => {
+  return News.findAll({}).then(news => {
+    let newsCopy = news.slice()
+    let finalNews = []
+    for (let i = 0; i < newsCopy.length; i++) {
+      if (new Date(Date.now()) <= newsCopy[i].expiration) {
+        finalNews.push(newsCopy[i])
+      }
+    }
+    return finalNews
+  })
+}
+
+adminModel.ADD_NEWS = (content, creator, expiration) => {
+  return News.create({
+    content,
+    expiration,
+    creator,
+  }).then(status => {
+    if (!status) {
+      sendError('AdminAddNews', 'Failed to add news', news, 'Admin')
+      return {
+        error: 'Failed to add news',
+      }
+    }
+    return {
+      status,
+      error: false,
+    }
+  })
+}
+
+adminModel.DELETE_NEWS = id => {
+  return News.destroy({
+    where: {
+      id,
+    },
+  }).then(status => {
+    return {
+      deleted: true,
+    }
   })
 }
 

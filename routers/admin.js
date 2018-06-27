@@ -146,4 +146,10 @@ adminRouter
   .post(checkAdmin, adminController.ADD_SCHOOL)
   .delete(checkAdmin, adminController.DELETE_SCHOOL)
 
+adminRouter
+  .route('/news')
+  .get(adminController.GET_NEWS)
+  .post(checkAdmin, adminController.ADD_NEWS)
+  .delete(checkAdmin, adminController.DELETE_NEWS)
+
 module.exports = adminRouter
