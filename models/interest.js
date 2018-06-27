@@ -29,7 +29,7 @@ interestModel.ADD_INTEREST = (userId, interestId) => {
         success: false,
       }
     }
-    return interest.setUsers(userId).then(status => {
+    return interest.addUsers(userId).then(status => {
       if (!status) {
         sendError('AddInterest', 'Add interest failure - could not setUser interest', interestId, 'Interest')
         return {
