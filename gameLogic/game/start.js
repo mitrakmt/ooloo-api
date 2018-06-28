@@ -1,8 +1,10 @@
 const {makeNullArray, makeEmptyObjArray} = require('../util'); 
 const {recordGameStart} = require('../record'); 
+const chart = require('./opponentLineGraph'); 
 
 const setupGameObject = async(gameObject, _config)=>{
 	const {players} = gameObject;
+	chart(); 
 	gameObject.startTime = Date.now();
 	gameObject.duration = _config.duration; 
 	gameObject.finishedTime = makeNullArray(players.length); 

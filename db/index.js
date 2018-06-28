@@ -44,6 +44,8 @@ Users.hasMany(Answers, { foreignKey: 'userId' })
 Games.hasMany(Answers, { foreignKey: 'gameId' })
 Questions.hasMany(Answers, { foreignKey: 'questionId', as: 'userAnswers' })
 
+Answers.belongsTo(Questions, {foreignKey: 'questionId'});
+
 // HELPER FUNCTION TO DROP ALL TABLES, LEAVE THIS FOR NOW
 // db.sync({ force: true }).then(() => {
 //   console.log("Tables have been dropped");
