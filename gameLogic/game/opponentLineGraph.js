@@ -5,7 +5,7 @@ const {Op} = Sequelize;
 
 const getLineGraph = async(yourId = 1, opponentId = 2)=>{
 	try{
-		const result = await Users.findOne({
+		const yourGamesQuery = await Users.findOne({
 			include:[
 				{
 					model: Games,
@@ -18,9 +18,20 @@ const getLineGraph = async(yourId = 1, opponentId = 2)=>{
 					]
 				}
 			],
-			where:{id:yourId}
+			where:{id:yourId},
 		})
-		console.log(result.dataValues.games.map(({dataValues})=>dataValues.UsersGames.dataValues)); 
+		const yourGames = yourGamesQuery.dataValues.games.map(({dataValues})=> dataValues.UsersGames.dataValues);
+		const gameIds = yourGames.map(({gameId})=> gameId); 
+		const theirGamesQuery = await UsersGames.findAll({
+			where:{
+				gameId: {[Op.or]: gameIds},
+				userId: opponentId
+			},
+			order:[['gameId']]
+		})
+		const theirGames = theirGamesQuery.map(({dataValues})=> dataValues);
+		console.log('---YOURS---',yourGames, gameIds); 
+		console.log('---THEIRS---', theirGames);
 	}catch(error){
 		console.error('error in getting opponent line graph', error); 
 	}
