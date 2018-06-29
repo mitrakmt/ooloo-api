@@ -10,6 +10,7 @@ userController.SIGN_UP = (req, res) => {
   let email = req.body.email
   let password = req.body.password
   let username = req.body.username
+  let school = req.body.school
 
   if (password.length < 7) {
     res.status(400).send({
@@ -17,7 +18,7 @@ userController.SIGN_UP = (req, res) => {
     })
   }
 
-  return userModel.SIGN_UP(email, password, username).then(response => {
+  return userModel.SIGN_UP(email, password, username, school).then(response => {
     if (response.error) {
       res.status(400).send({
         error: response.error,
