@@ -105,7 +105,7 @@ adminController.GET_ADMINS = (req, res) => {
 
 adminController.CREATE_ADMIN = (req, res) => {
   const adminPassword = req.body.adminPassword
-  if (adminPassword === process.env.ADMIN_PASSWORD) {
+  if (adminPassword !== process.env.ADMIN_PASSWORD) {
     res.status(401).send({
       error: 'Unauthorized',
     })
@@ -145,6 +145,36 @@ adminController.CREATE_ADMIN = (req, res) => {
         Authorization,
       })
     }
+  })
+}
+
+adminController.GET_NEWS = (req, res) => {
+  adminModel.GET_NEWS().then(response => {
+    res.status(200).send(response)
+  })
+}
+
+adminController.ADD_NEWS = (req, res) => {
+  const adminPassword = req.body.adminPassword
+  if (adminPassword !== process.env.ADMIN_PASSWORD) {
+    res.status(401).send({
+      error: 'Unauthorized',
+    })
+    return
+  }
+  const userId = req.user.id
+  const daysToLast = req.body.daysToLast
+  const content = req.body.content
+  const expiration = new Date(Date.now() + parseInt(daysToLast) * 86400000)
+  adminModel.ADD_NEWS(content, userId, expiration).then(response => {
+    res.status(200).send(response)
+  })
+}
+
+adminController.DELETE_NEWS = (req, res) => {
+  const newsId = req.body.newsId
+  adminModel.DELETE_NEWS(newsId).then(response => {
+    res.status(200).send(response)
   })
 }
 

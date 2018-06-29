@@ -1,6 +1,5 @@
 const schoolRouter = require('express').Router()
 const schoolController = require('../controllers/school')
-const checkJwt = require('../middleware/auth')
 
 schoolRouter
   .route('/')
@@ -29,18 +28,12 @@ schoolRouter
    *       "message": "Error response"
    *     }
    */
-  .get(checkJwt, schoolController.GET_SCHOOLS)
+  .get(schoolController.GET_SCHOOLS)
 
-schoolRouter
-  .route('/topSchools')
-  .get(schoolController.GET_TOP_SCHOOLS)
+schoolRouter.route('/topSchools').get(schoolController.GET_TOP_SCHOOLS)
 
-schoolRouter
-  .route('/schoolRank/:id')
-  .get(schoolController.GET_SCHOOL_RANK)
+schoolRouter.route('/schoolRank/:id').get(schoolController.GET_SCHOOL_RANK)
 
-schoolRouter
-  .route('/leaderboard')
-  .get(schoolController.GET_SCHOOL_LEADERBOARD)
+schoolRouter.route('/leaderboard').get(schoolController.GET_SCHOOL_LEADERBOARD)
 
 module.exports = schoolRouter

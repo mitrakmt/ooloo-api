@@ -33,6 +33,9 @@ module.exports = db => {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      graduationYear: {
+        type: Sequelize.INTEGER,
+      },
       rank: {
         type: Sequelize.STRING,
         defaultValue: 0,

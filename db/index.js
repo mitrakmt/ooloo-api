@@ -9,6 +9,7 @@ const Schools = require('./schools')(db)
 const Answers = require('./answers')(db)
 const Games = require('./games')(db)
 const LoadingFacts = require('./loadingFacts')(db)
+const News = require('./news')(db)
 
 // CREATE JOIN TABLES
 const UsersInterests = db.define('UsersInterests', {})
@@ -16,7 +17,7 @@ const UsersGames = db.define('UsersGames', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
-    autoIncrement: true 
+    autoIncrement: true,
   },
   score: Sequelize.INTEGER,
   userId: Sequelize.INTEGER,
@@ -66,4 +67,5 @@ module.exports = {
   Games,
   UsersGames,
   LoadingFacts,
+  News,
 }
