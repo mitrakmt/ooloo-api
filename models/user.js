@@ -7,7 +7,7 @@ const _ = require('lodash')
 const { Op } = require('sequelize')
 const sendError = require('../helpers/sendError')
 
-userModel.SIGN_UP = (email, password, username) => {
+userModel.SIGN_UP = (email, password, username, university) => {
   return User.findOne({
     where: {
       username,
@@ -33,6 +33,7 @@ userModel.SIGN_UP = (email, password, username) => {
           username,
           email,
           password: hash,
+          university,
         }).then(user => {
           return {
             user,
