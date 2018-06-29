@@ -6,6 +6,7 @@ const admin = require('./admin')
 const image = require('./image')
 const subscription = require('./subscription')
 const leaderboard = require('./leaderboard')
+const graph = require('./graph'); 
 const school = require('./school')
 
 Router.use('/user', user)
@@ -15,6 +16,7 @@ Router.use('/admin', admin)
 Router.use('/image', image)
 Router.use('/subscription', subscription)
 Router.use('/leaderboard', leaderboard)
+Router.use('/graph', graph); 
 Router.use('/school', school)
 
 module.exports = Router
