@@ -87,14 +87,12 @@ const playerConnects = async(socket, token, {id, _queueOrMatch = queueOrMatch} =
 };
 
 const getInterests = async(id)=>{
-	console.log('-------finding interests-------------')
 	let interests = await GET_INTERESTS(id); 
 	interests = interests.map(({id, name})=>({id,name}));
 	if(interests.length === 0){
 		interests = await Interests.findAll({});
 		interests = interests.map(({dataValues:{id, name}})=>({id, name}))
 	}
-	console.log('INTERESTS -----:', interests)
 	return interests;
 }
 
