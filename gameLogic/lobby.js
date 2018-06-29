@@ -6,6 +6,7 @@ const {setupGame} = require('./gameManager');
 const {botTimer, matchFoundTimer} = require('./gameConfig');
 const {GET_QUESTIONS, GET_BIASED_QUESTIONS} = require('../models/question');
 const {GET_USER} = require('../models/user');
+const {Interests} = require('../db'); 
 
 const playerQueue = []; 
 
@@ -75,8 +76,7 @@ const playerConnects = async(socket, token, {id, _queueOrMatch = queueOrMatch} =
 		if(error){
 			throw error; 
 		}
-		let interests = await GET_INTERESTS(id); 
-		interests = interests.map(({id, name})=>({id,name}))
+		let interests = await getInterests(id); 
 		const {username} = await GET_USER(id); 
 		const playerObject = {socket, id, interests, username};
 		_queueOrMatch(playerObject); 
@@ -85,6 +85,18 @@ const playerConnects = async(socket, token, {id, _queueOrMatch = queueOrMatch} =
 		console.error("Error in player connecting: ", error); 
 	}
 };
+
+const getInterests = async(id)=>{
+	console.log('-------finding interests-------------')
+	let interests = await GET_INTERESTS(id); 
+	interests = interests.map(({id, name})=>({id,name}));
+	if(interests.length === 0){
+		interests = await Interests.findAll({});
+		interests = interests.map(({dataValues:{id, name}})=>({id, name}))
+	}
+	console.log('INTERESTS -----:', interests)
+	return interests;
+}
 
 const startBotGameTimer = (playerObj)=>{
 	const timerID = setTimeout(()=>{
