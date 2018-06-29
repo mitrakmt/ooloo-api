@@ -1,8 +1,8 @@
-const {Questions, Interests, Answers, db} = require('../../db');
+const {Questions, Interests, Answers, db} = require('../db');
 const Sequelize = require('Sequelize');
 const {Op} = Sequelize; 
 
-const getBarChart = async(userId, interests)=>{
+const getAveragesGraph = async(userId, interests)=>{
 	try{
 		interestsIds = interests.map(({id})=> id); 
 		const correctPromise = Questions.findAll({
@@ -28,8 +28,8 @@ const getBarChart = async(userId, interests)=>{
 			group: ['questions.id']
 		});
 		const [correct, incorrect] = await Promise.all([correctPromise, incorrectPromise]);
-		console.log(incorrect.map(({dataValues})=> dataValues));
-		return await sumCharts(correct, incorrect);  
+		const data = await sumCharts(correct, incorrect);
+		return {data};   
 	}catch(error){
 		console.error(error);
 	}
@@ -44,9 +44,8 @@ const sumCharts = async(correct, incorrect)=>{
 			attributes:['name', 'id']
 		});
 		const topicsArray = topicsResult.map(({dataValues})=>dataValues)
-		console.log('sum: ', totalObj);
 		const result = createTally(totalObj, topicsArray);
-		console.log('result', result); 
+		return result; 
 	}catch(error){
 		console.error('error in summing chart', error); 
 	}
@@ -55,7 +54,6 @@ const createTally = (sumObject, topicsArray)=>{
 	return topicsArray.map(({name, id})=>{
 		const correct = sumObject[id]['correct'] || 0;
 		const incorrect = sumObject[id]['incorrect'] || 0; 
-		console.log(name,': ', correct, incorrect, correct / (correct+incorrect))
 		return {[name]: correct / (correct + incorrect)}; 
 	})
 }
@@ -70,6 +68,4 @@ const sumTopics = (array, key, resultObj = {})=>{
 	}, resultObj)
 }
 
-module.exports = {
-	getBarChart
-}
+module.exports = {getAveragesGraph}

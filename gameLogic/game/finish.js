@@ -1,35 +1,42 @@
 const {GET_USER_RANK} = require('../../models/user'); 
 const {recordGameStart, recordGameFinish} = require('../record'); 
 const {db, Users, Answers} = require('../../db');
+const compileGraphs = require('./compileGraphs');
 
 const gameFinished = async(gameObject)=>{
 	gameObject.playersFinished++;
 	const gameState = gameObject.getCurrentGameState(gameObject); 
+	gameObject.state = gameState; 
 	gameState.score = gameState.score.map((points)=>{
 		return Math.round(points * (1 - ((gameObject.duration - gameState.remainingTime) / 1000 / 600)));
 	});
-	gameState.ranks = await getRank(gameObject.players); 
+	const graphDataPromise = compileGraphs(gameObject); 
+	const rankPromise = getRank(gameObject.players); 
+	const [graphData, ranks] = await Promise.all([graphDataPromise, rankPromise]);
+	gameState.ranks = ranks
 	gameObject.finishedTime = gameObject.players.map(({finishedTime})=> finishedTime);
-	gameObject.state = gameState; 
-	await sendFinalResults(gameObject, gameState); 
+	await sendFinalResults(gameObject, gameState, graphData); 
 	if(gameObject.playersFinished >= gameObject.numberOfPlayers || gameObject.outOfTime){
 		recordGameFinish(gameObject); 
 		tearDown(gameObject);
 	}
 };
 
-const sendFinalResults = async(gameObject, gameState)=>{
+const sendFinalResults = async(gameObject, gameState, graphData)=>{
 	await modifyIfSoloGame(gameObject, gameState); 
 	const results = {
 		...gameState,
 		answers: gameObject.answers,
 		gameID: gameObject.gameID,
-		finishedTime: gameObject.finishedTime
+		finishedTime: gameObject.finishedTime,
 	};
 	gameObject.scoreState = gameState; 
-	gameObject.players.forEach(({isFinished, socket})=>{
+	gameObject.players.forEach(({isFinished, socket}, index)=>{
 		if(isFinished === true || gameObject.outOfTime){
-			socket.emit('gameResults', {...results});
+			socket.emit('gameResults', {
+				...results,
+				graphData: graphData[index]
+			});
 		}
 	});
 };

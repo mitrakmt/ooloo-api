@@ -1,9 +1,9 @@
-const {UsersGames, Users, Games, db} = require('../../db');
+const {UsersGames, Users, Games, db} = require('../db');
 const Sequelize = require('Sequelize');
 const {Op} = Sequelize; 
 
 
-const getLineGraph = async(yourId = 1, opponentId = 2)=>{
+const geMatchHistoryGraph = async(yourId = 1, opponentId = 2, didYouWin)=>{
 	try{
 		const yourGamesQuery = await Users.findOne({
 			include:[
@@ -30,11 +30,28 @@ const getLineGraph = async(yourId = 1, opponentId = 2)=>{
 			order:[['gameId']]
 		})
 		const theirGames = theirGamesQuery.map(({dataValues})=> dataValues);
-		console.log('---YOURS---',yourGames, gameIds); 
-		console.log('---THEIRS---', theirGames);
+		return {
+			data: mergeData(yourGames, theirGames, didYouWin)
+		} 
 	}catch(error){
 		console.error('error in getting opponent line graph', error); 
 	}
 }
 
-module.exports = getLineGraph; 
+const mergeData = (yourGames, theirGames, didYouWin)=>{
+	const gameObj = yourGames.reduce((totalObj, game)=>{
+		totalObj[game.gameId] = game; 
+		return totalObj; 
+	},{})
+	let gamesWon = 0; 
+	const winHistory = theirGames.map((theirGame, index)=>{
+		const yourGame = gameObj[theirGame.gameId];
+		if(yourGame.score > theirGame.score) gamesWon++; 
+		return gamesWon / (index+1)
+	})
+	if(didYouWin) gamesWon++;
+	winHistory.push(gamesWon / (winHistory.length + 1));
+	return winHistory; 
+}
+
+module.exports = {geMatchHistoryGraph}; 

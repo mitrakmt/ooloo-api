@@ -1,4 +1,4 @@
-const {Questions, Interests, Answers, db} = require('../../db');
+const {Questions, Interests, Answers, db} = require('../db');
 const Sequelize = require('Sequelize');
 const {Op} = Sequelize; 
 
@@ -7,8 +7,9 @@ const times = {
 	day: 1000 * 60 * 60 * 24
 }
 
-const getLineChart = async(userId, topicsArray, timeSpan = 'day')=>{
+const getTopicsOverTime = async(userId, topicsArray, timeSpan = 'day')=>{
 	try{
+		const interestsIds = topicsArray.map(({id})=> id); 
 		const results = await Answers.findAll({
 			attributes:[
 				'correct',
@@ -18,6 +19,7 @@ const getLineChart = async(userId, topicsArray, timeSpan = 'day')=>{
 			include:{
 				model: Questions,
 				attributes: ['topics'],
+				where:{topics:{[Op.overlap]: interestsIds}}
 			},
 			raw:true,
 			group:['topics', 'correct', 'time'],
@@ -25,9 +27,10 @@ const getLineChart = async(userId, topicsArray, timeSpan = 'day')=>{
 			order:[db.literal('time DESC'), 'correct']
 		})
 		const topicNameObj =  await getTopicsNames(results);
+		const data = organizeData(results, topicNameObj, timeSpan)
 		return { 
 			time: timeSpan,
-			data: organizeData(results, topicNameObj, timeSpan)
+			data
 		};
 	}catch(error){
 		console.error('error in getting line chart', error); 
@@ -72,7 +75,7 @@ const organizeData = (answersArray, topicNameObj, timeSpan)=>{
 		for(let i = 0; i < valueArray.length; i++){
 			const {correct = 0, incorrect = 0} = valueArray[i] || {}; 
 			if(correct === 0 && incorrect === 0){
-				data[topic][i] = 0;
+				data[topic][i] = null;
 			}else{
 				data[topic][i] = (correct / (correct + incorrect)); 
 			}
@@ -81,4 +84,4 @@ const organizeData = (answersArray, topicNameObj, timeSpan)=>{
 	return data; 
 }
 
-module.exports = getLineChart; 
+module.exports = {getTopicsOverTime}
