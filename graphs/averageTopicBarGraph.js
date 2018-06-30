@@ -1,5 +1,5 @@
 const {Questions, Interests, Answers, db} = require('../db');
-const Sequelize = require('Sequelize');
+const Sequelize = require('sequelize');
 const {Op} = Sequelize; 
 
 const getAveragesGraph = async(userId, interests)=>{

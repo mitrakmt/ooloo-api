@@ -1,5 +1,5 @@
 const {UsersGames, Users, Games, db} = require('../db');
-const Sequelize = require('Sequelize');
+const Sequelize = require('sequelize');
 const {Op} = Sequelize; 
 
 
