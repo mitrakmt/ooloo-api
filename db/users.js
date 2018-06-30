@@ -36,6 +36,10 @@ module.exports = db => {
       graduationYear: {
         type: Sequelize.INTEGER,
       },
+      news:{
+        type: Sequelize.JSON,
+        defaultValue: null
+      },
       rank: {
         type: Sequelize.STRING,
         defaultValue: 0,
