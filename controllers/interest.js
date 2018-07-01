@@ -15,6 +15,8 @@ interestController.ADD_INTEREST = (req, res) => {
   let interests = req.body.interests
   let interestPromises = []
 
+  console.log('interests array', interests)
+
   for (let i = 0; i < interests.length; i++) {
     interestPromises.push(
       new Promise((resolve, reject) => {
