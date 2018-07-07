@@ -15,8 +15,6 @@ interestController.ADD_INTEREST = (req, res) => {
   let interests = req.body.interests
   let interestPromises = []
 
-  console.log('interests array', interests)
-
   for (let i = 0; i < interests.length; i++) {
     interestPromises.push(
       new Promise((resolve, reject) => {
@@ -37,6 +35,14 @@ interestController.ADD_INTEREST = (req, res) => {
 interestController.DELETE_INTEREST = (req, res) => {
   let userId = req.user.id
   let interestId = req.body.interestId
+  console.log('interestId', interestId)
+
+  if (!interestId) {
+    res.send({
+      status: 400,
+      error: 'No interest ID provided',
+    })
+  }
 
   interestModel.DELETE_INTEREST(userId, interestId).then(response => {
     res.send({
