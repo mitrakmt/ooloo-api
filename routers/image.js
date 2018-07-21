@@ -4,24 +4,19 @@ const imageController = require('../controllers/image')
 imageRouter
   .route('/profile/:userId')
   /**
-   * @api {post} /email/contact Contact Ooloo
-   * @apiName ContactUs
-   * @apiGroup Email
+   * @api {post} /image/:userId Upload image
+   * @apiName SaveProfileImage
+   * @apiGroup Image
    *
-   * @apiParam {String} email Your email.
-   * @apiParam {String} name Your name.
-   * @apiParam {String} topic Why are you contacting us.
-   * @apiParam {String} message Your message.
+   * @apiParam {String} images Your profile image.
    *
    * @apiSuccess {Bool} sent Bool of sent status.
    *
    * @apiSuccessExample Success-Response:
    *     HTTP/1.1 200 OK
    *     {
-   *       "sent": true
+   *       "saved": true
    *     }
-   *
-   * @apiError FailedToSend There was an issue sending the email
    *
    * @apiErrorExample Error-Response:
    *     HTTP/1.1 404 Not Found
