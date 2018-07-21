@@ -32,7 +32,6 @@ const matchFound = gameObject => {
   const playerImageIds = gameObject.players.map(({ id }) => id)
   if (usernames.length === 1) usernames.push('Average Scores: ')
   if (playerImageIds.length === 1) playerImageIds.push(null)
-  console.log('playerImageIds, playerImageIds', playerImageIds)
   const interests = gameObject.interests.map(({ name }) => name)
   gameObject.players.forEach(({ socket }, playerIndex) => {
     socket.emit('matchFound', {
