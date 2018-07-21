@@ -34,6 +34,7 @@ const matchFound = gameObject => {
   if (usernames.length > 1) {
     opponentImageId = gameObject.players[1].id
   }
+  console.log('opponentImageId', opponentImageId)
   if (usernames.length === 1) usernames.push('Average Scores: ')
   const interests = gameObject.interests.map(({ name }) => name)
   gameObject.players.forEach(({ socket }, playerIndex) => {
