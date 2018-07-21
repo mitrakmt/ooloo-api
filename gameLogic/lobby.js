@@ -30,10 +30,9 @@ const getQuestions = async (interests, playersArray) => {
 const matchFound = gameObject => {
   console.log('match found', gameObject)
   const usernames = gameObject.players.map(({ username }) => username)
-  if (usernames.length === 1) {
-    const opponentImageId = null
-  } else {
-    const opponentImageId = gameObject.players[1].id
+  let opponentImageId = null
+  if (usernames.length > 1) {
+    opponentImageId = gameObject.players[1].id
   }
   if (usernames.length === 1) usernames.push('Average Scores: ')
   const interests = gameObject.interests.map(({ name }) => name)
