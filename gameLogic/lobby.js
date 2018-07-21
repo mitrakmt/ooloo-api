@@ -28,21 +28,18 @@ const getQuestions = async (interests, playersArray) => {
   }
 }
 const matchFound = gameObject => {
-  console.log('match found', gameObject)
   const usernames = gameObject.players.map(({ username }) => username)
-  let opponentImageId = null
-  if (usernames.length > 1) {
-    opponentImageId = gameObject.players[1].id
-  }
-  console.log('opponentImageId', opponentImageId)
+  const playerImageIds = gameObject.players.map(({ id }) => id)
   if (usernames.length === 1) usernames.push('Average Scores: ')
+  if (playerImageIds.length === 1) playerImageIds.push(null)
+  console.log('playerImageIds, playerImageIds', playerImageIds)
   const interests = gameObject.interests.map(({ name }) => name)
   gameObject.players.forEach(({ socket }, playerIndex) => {
     socket.emit('matchFound', {
       interests,
       usernames,
       playerIndex,
-      opponentImageId,
+      playerImageIds,
     })
   })
   setTimeout(() => setupGame(gameObject), matchFoundTimer)
